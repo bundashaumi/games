@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Super Duel Hobbies — Platformer Bahasa Inggris Kelas 3 SD</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Fredoka & Nunito -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Shared Data Bank -->
+  <script src="../js/data.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Nunito', sans-serif;
+      user-select: none;
+      -webkit-user-select: none;
+      touch-action: none;
+      background-color: #0f172a;
+    }
+    .font-game {
+      font-family: 'Fredoka', sans-serif;
+    }
+    .game-canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    .btn-game {
+      box-shadow: 0 5px 0 rgba(15, 23, 42, 0.35);
+      transition: transform 0.08s ease, box-shadow 0.08s ease, filter 0.12s ease;
+    }
+    .btn-game:active {
+      transform: translateY(3px);
+      box-shadow: 0 2px 0 rgba(15, 23, 42, 0.35);
+    }
+    .touch-btn {
+      background: rgba(15, 23, 42, 0.55);
+      color: #ffffff;
+      border: 3px solid rgba(255, 255, 255, 0.65);
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(4px);
+      transition: transform 0.06s ease, background-color 0.06s ease;
+      touch-action: none;
+    }
+    .touch-btn.active {
+      background: rgba(250, 204, 21, 0.85);
+      color: #0f172a;
+      border-color: #ffffff;
+      transform: scale(0.93);
+    }
+    @keyframes popIn {
+      0% { transform: scale(0.85); opacity: 0; }
+      70% { transform: scale(1.03); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .animate-pop {
+      animation: popIn 0.22s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    @keyframes flashGreen {
+      0% { background-color: rgba(34, 197, 94, 0.45); }
+      100% { background-color: rgba(34, 197, 94, 0); }
+    }
+    @keyframes flashRed {
+      0% { background-color: rgba(239, 68, 68, 0.5); }
+      100% { background-color: rgba(239, 68, 68, 0); }
+    }
+    .flash-correct {
+      animation: flashGreen 0.5s ease-out forwards;
+    }
+    .flash-wrong {
+      animation: flashRed 0.5s ease-out forwards;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 8px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 999px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #94a3b8;
+      border-radius: 999px;
+    }
+  </style>
+</head>
+<body class="bg-slate-900">
+
+  <!-- ==================== 1. LAYAR AWAL (START SCREEN) ==================== -->
+  <div id="startScreen" class="fixed inset-0 z-30 flex items-center justify-center p-3 sm:p-5 overflow-y-auto bg-gradient-to-b from-sky-400 via-sky-300 to-emerald-400">
+    <!-- Dekorasi latar belakang -->
+    <div class="pointer-events-none fixed inset-0 overflow-hidden opacity-30">
+      <div class="absolute top-10 left-10 w-32 h-12 bg-white rounded-full"></div>
+      <div class="absolute top-20 right-16 w-44 h-14 bg-white rounded-full"></div>
+      <div class="absolute bottom-0 inset-x-0 h-20 bg-emerald-600 border-t-8 border-emerald-400"></div>
+    </div>
+
+    <!-- Tombol Fullscreen Pojok Kanan Atas -->
+    <div class="fixed top-3 right-3 z-40 flex items-center gap-2">
+      <button id="btnFullscreenStart" class="btn-game px-3.5 py-1.5 rounded-full bg-white/90 hover:bg-white text-slate-800 font-game font-bold text-xs sm:text-sm shadow-md border-2 border-amber-300 flex items-center gap-1.5 cursor-pointer">
+        <span id="fsIcon">⛶</span> Fullscreen
+      </button>
+    </div>
+
+    <div class="relative z-10 w-full max-w-4xl bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl border-4 border-amber-400 p-4 sm:p-6 my-auto">
+      <!-- Header Judul & Maskot Bunda Shaumi -->
+      <div class="flex items-center justify-center gap-3 sm:gap-4 mb-3.5">
+        <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-amber-100 border-4 border-amber-400 shadow-md overflow-hidden shrink-0 flex items-center justify-center">
+          <img src="../bunda_shaumi.png" alt="Bunda Shaumi" class="w-full h-full object-cover" onerror="this.src='../bunda_shaumi.png'" />
+        </div>
+        <div class="text-left">
+          <div class="inline-flex items-center gap-2 px-3 py-0.5 rounded-full bg-amber-100 text-amber-800 font-extrabold text-xs sm:text-sm uppercase tracking-wider border border-amber-300 mb-1">
+            <span>🇬🇧</span> Kelas 3 SD • Hobbies • Bunda Shaumi
+          </div>
+          <h1 class="font-game text-2xl sm:text-4xl lg:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-600 via-amber-500 to-emerald-600 drop-shadow-sm">
+            SUPER DUEL HOBBIES
+          </h1>
+          <p class="text-slate-600 font-bold text-xs sm:text-sm mt-0.5">
+            Sundul kotak <span class="inline-block px-1.5 py-0.5 bg-amber-400 text-amber-950 rounded font-game">[?]</span>, tebak <b>gambar hobi</b> dalam Bahasa Inggris!
+          </p>
+        </div>
+      </div>
+
+      <!-- Pemilih Mode: 2 Pemain (TV/Laptop) vs 1 Pemain (HP) -->
+      <div class="flex justify-center mb-4">
+        <div class="inline-flex bg-slate-100 p-1 rounded-2xl border-2 border-slate-200 gap-1">
+          <button type="button" id="btnModeDuel"
+            class="px-4 py-2 rounded-xl font-game font-bold text-sm sm:text-base cursor-pointer transition-all bg-indigo-600 text-white shadow-sm">
+            ⚔️ Duel 2 Pemain (TV / Laptop)
+          </button>
+          <button type="button" id="btnModeSolo"
+            class="px-4 py-2 rounded-xl font-game font-bold text-sm sm:text-base cursor-pointer transition-all text-slate-600 hover:bg-slate-200">
+            🎮 1 Pemain (HP / Solo)
+          </button>
+        </div>
+      </div>
+
+      <!-- Kustomisasi & Input Nama Pemain -->
+      <div id="playerSetupGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <!-- ===== KARTU PEMAIN 1 (KIRI) ===== -->
+        <div class="bg-red-50 border-2 border-red-300 rounded-2xl p-3.5 sm:p-4">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-20 h-20 rounded-2xl bg-gradient-to-b from-sky-300 to-sky-100 border-2 border-red-400 shadow-inner flex items-center justify-center shrink-0 overflow-hidden">
+              <canvas id="previewCanvas0" width="80" height="80" class="w-full h-full"></canvas>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-1.5 mb-1.5">
+                <span class="w-6 h-6 rounded-full bg-red-600 text-white font-game font-bold text-xs flex items-center justify-center shadow">P1</span>
+                <label for="inputP1" id="labelP1" class="font-game font-bold text-red-700 text-base sm:text-lg">Pemain 1 (Kiri)</label>
+              </div>
+              <input id="inputP1" type="text" value="Pemain 1" maxlength="16"
+                class="w-full px-3 py-1.5 rounded-xl border-2 border-red-200 focus:border-red-500 focus:outline-none font-extrabold text-slate-800 text-sm sm:text-base bg-white"
+                placeholder="Nama Pemain 1..." />
+            </div>
+          </div>
+
+          <!-- Pilihan Karakter P1 -->
+          <div class="mb-2.5">
+            <div class="text-xs font-extrabold text-red-800 mb-1">Karakter:</div>
+            <div class="grid grid-cols-3 gap-1.5" id="genderGroup0">
+              <button type="button" data-p="0" data-gender="boy"
+                class="opt-gender-btn py-1.5 px-2 rounded-xl border-2 text-xs font-extrabold cursor-pointer transition-all bg-red-600 text-white border-red-700 shadow-sm">
+                👦 Laki-laki
+              </button>
+              <button type="button" data-p="0" data-gender="girl"
+                class="opt-gender-btn py-1.5 px-2 rounded-xl border-2 text-xs font-extrabold cursor-pointer transition-all bg-white text-slate-700 border-red-200 hover:border-red-400">
+                👧 Perempuan
+              </button>
+              <button type="button" data-p="0" data-gender="hijab"
+                class="opt-gender-btn py-1.5 px-2 rounded-xl border-2 text-xs font-extrabold cursor-pointer transition-all bg-white text-slate-700 border-red-200 hover:border-red-400">
+                🧕 Hijab
+              </button>
+            </div>
+          </div>
+
+          <!-- Pilihan Seragam Sekolah P1 -->
+          <div class="mb-2">
+            <div class="text-xs font-extrabold text-red-800 mb-1">Seragam Sekolah:</div>
+            <div class="grid grid-cols-3 gap-1.5" id="uniformGroup0">
+              <button type="button" data-p="0" data-uniform="SD"
+                class="opt-uniform-btn py-1.5 px-2 rounded-xl border-2 text-xs font-extrabold cursor-pointer transition-all bg-red-600 text-white border-red-700 shadow-sm">
+                🎒 SD
+              </button>
+              <button type="button" data-p="0" data-uniform="SMP"
+                class="opt-uniform-btn py-1.5 px-2 rounded-xl border-2 text-xs font-extrabold cursor-pointer transition-all bg-white text-slate-700 border-red-200 hover:border-red-400">
+                📘 SMP
+              </button>
+              <button type="button" data-p="0" data-uniform="SMA"
+                class="opt-uniform-btn py-1.5 px-2 rounded-xl border-2 text-xs font-extrabold cursor-pointer transition-all bg-white text-slate-700 border-red-200 hover:border-red-400">
+                🎓 SMA
+              </button>
+            </div>
+          </div>
+
+          <div class="text-[11px] font-bold text-red-700/80 flex flex-wrap gap-1">
+            <span class="px-2 py-0.5 bg-white rounded border border-red-200">Gerak: A / D / W atau Sentuh</span>
+            <span class="px-2 py-0.5 bg-white rounded border border-red-200">Jawab: 1-4 / Sentuh</span>
+          </div>
+        </div>
+
+        <!-- ===== KARTU PEMAIN 2 (KANAN) ===== -->
+        <div id="setupCardP2" class="bg-emerald-50 border-2 border-emerald-300 rounded-2xl p-3.5 sm:p-4">
+          <div class="flex items-center gap-3 mb-3">
+            <div class="w-20 h-20 rounded-2xl bg-gradient-to-b from-sky-300 to-sky-100 border-2 border-emerald-400 shadow-inner flex items-center justify-center shrink-0 overflow-hidden">
+              <canvas id="previewCanvas1" width="80" height="80" class="w-full h-full"></canvas>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-1.5 mb-1.5">
+                <span class="w-6 h-6 rounded-full bg-emerald-600 text-white font-game font-bold text-xs flex items-center justify-center shadow">P2</span>
+                <label for="inputP2" class="font-game font-bold text-emerald-700 text-base sm:text-lg">Pemain 2 (Kanan)</label>
+              </div>
+              <input id="inputP2" type="text" value="Pemain 2" maxlength="16"
+                class="w-full px-3 py-1.5 rounded-xl border-2 border-emerald-200 focus:border-emerald-500 focus:outline-none font-extrabold text-slate-800 text-sm sm:text-base bg-white"
+                placeholder="Nama Pemain 2..." />
+            </div>
+          </div>
+
+          <!-- Pilihan Karakter P2 -->
+          <div class="mb-2.5">
+            <div class="text-xs font-extrabold text-emerald-800 mb-1">Karakter:</div>
+            <div class="grid grid-cols-3 gap-1.5" id="genderGroup1">
+              <button type="button" data-p="1" data-gender="boy"
+                class="opt-gender-btn py-1.5 px-2 rounded-xl border-2 text-xs font-extrabold cursor-pointer transition-all bg-white text-slate-700 border-emerald-200 hover:border-emerald-400">
+                👦 Laki-laki
+              </button>
+              <button type="button" data-p="1" data-gender="girl"
+                class="opt-gender-btn py-1.5 px-2 rounded-xl border-2 text-xs font-extrabold cursor-pointer transition-all bg-emerald-600 text-white border-emerald-700 shadow-sm">
+                👧 Perempuan
+              </button>
+              <button type="button" data-p="1" data-gender="hijab"
+                class="opt-gender-btn py-1.5 px-2 rounded-xl border-2 text-xs font-extrabold cursor-pointer transition-all bg-white text-slate-700 border-emerald-200 hover:border-emerald-400">
+                🧕 Hijab
+              </button>
+            </div>
+          </div>
+
+          <!-- Pilihan Seragam Sekolah P2 -->
+          <div class="mb-2">
+            <div class="text-xs font-extrabold text-emerald-800 mb-1">Seragam Sekolah:</div>
+            <div class="grid grid-cols-3 gap-1.5" id="uniformGroup1">
+              <button type="button" data-p="1" data-uniform="SD"
+                class="opt-uniform-btn py-1.5 px-2 rounded-xl border-2 text-xs font-extrabold cursor-pointer transition-all bg-emerald-600 text-white border-emerald-700 shadow-sm">
+                🎒 SD
+              </button>
+              <button type="button" data-p="1" data-uniform="SMP"
+                class="opt-uniform-btn py-1.5 px-2 rounded-xl border-2 text-xs font-extrabold cursor-pointer transition-all bg-white text-slate-700 border-emerald-200 hover:border-emerald-400">
+                📘 SMP
+              </button>
+              <button type="button" data-p="1" data-uniform="SMA"
+                class="opt-uniform-btn py-1.5 px-2 rounded-xl border-2 text-xs font-extrabold cursor-pointer transition-all bg-white text-slate-700 border-emerald-200 hover:border-emerald-400">
+                🎓 SMA
+              </button>
+            </div>
+          </div>
+
+          <div class="text-[11px] font-bold text-emerald-700/80 flex flex-wrap gap-1">
+            <span class="px-2 py-0.5 bg-white rounded border border-emerald-200">Gerak: ◀ / ▶ / ▲ atau Sentuh</span>
+            <span class="px-2 py-0.5 bg-white rounded border border-emerald-200">Jawab: 7-0 / Numpad / Sentuh</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ringkasan Aturan Singkat -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4 text-center text-xs sm:text-sm font-extrabold">
+        <div class="bg-amber-50 border border-amber-200 rounded-xl p-2 text-amber-900">
+          🪙 Koin Emas<br><span class="text-amber-600">+1 Poin</span>
+        </div>
+        <div class="bg-blue-50 border border-blue-200 rounded-xl p-2 text-blue-900">
+          ❓ Tebak Gambar Hobi<br><span class="text-blue-600">+10 Poin</span>
+        </div>
+        <div class="bg-rose-50 border border-rose-200 rounded-xl p-2 text-rose-900">
+          👾 Injak / Kena Musuh<br><span class="text-rose-600">+2 / Penyelamat!</span>
+        </div>
+        <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-2 text-emerald-900">
+          🚩 Bendera Finis<br><span class="text-emerald-600">Bonus +5 Poin</span>
+        </div>
+      </div>
+
+      <!-- Tombol Aksi Utama -->
+      <div class="flex flex-col sm:flex-row gap-3">
+        <button id="btnStartGame"
+          class="btn-game flex-1 py-4 px-6 rounded-2xl bg-gradient-to-b from-emerald-400 to-emerald-600 hover:from-emerald-300 hover:to-emerald-500 text-white font-game text-2xl font-bold tracking-wide flex items-center justify-center gap-2 cursor-pointer">
+          <span>▶</span> MULAI MAIN!
+        </button>
+        <button id="btnOpenHobbyBank"
+          class="btn-game py-4 px-6 rounded-2xl bg-gradient-to-b from-blue-500 to-blue-700 hover:from-blue-400 hover:to-blue-600 text-white font-game text-xl font-bold flex items-center justify-center gap-2 cursor-pointer">
+          <span>📚</span> Bank Soal (<span id="badgeHobbyCount">15</span>)
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 2. ARENA GAMEPLAY ==================== -->
+  <div id="gameContainer" class="hidden fixed inset-0 w-full h-full flex flex-row bg-slate-950">
+
+    <!-- Bilah Kontrol Tengah Atas (Mute, Fullscreen, & Menu) -->
+    <div class="fixed top-2 left-1/2 -translate-x-1/2 z-30 flex items-center gap-1.5 bg-slate-900/85 backdrop-blur-md px-3 py-1.5 rounded-full border-2 border-slate-600 shadow-lg">
+      <button id="btnMute" title="Suara Hidup/Mati"
+        class="px-2.5 py-1 rounded-full bg-slate-700 hover:bg-slate-600 text-white font-bold text-sm cursor-pointer flex items-center gap-1">
+        <span id="muteIcon">🔊</span>
+      </button>
+      <button id="btnFullscreenInGame" title="Layar Penuh"
+        class="px-2.5 py-1 rounded-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs sm:text-sm cursor-pointer flex items-center gap-1">
+        <span>⛶</span> Fullscreen
+      </button>
+      <button id="btnBackMenu" title="Kembali ke Menu"
+        class="px-3 py-1 rounded-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-game font-bold text-xs sm:text-sm cursor-pointer">
+        MENU
+      </button>
+    </div>
+
+    <!-- Layar Kiri: Pemain 1 -->
+    <div id="pane0" class="relative w-1/2 h-full overflow-hidden border-r-4 border-slate-900">
+      <canvas id="canvas0" class="game-canvas"></canvas>
+      <div id="flash0" class="pointer-events-none absolute inset-0 z-20"></div>
+
+      <!-- HUD Pemain 1 -->
+      <div id="hudWrap0" class="pointer-events-none absolute top-2 left-2 right-12 z-10 flex flex-col gap-1.5">
+        <div class="flex items-center justify-between bg-slate-900/80 backdrop-blur-sm text-white px-3 py-1.5 rounded-2xl border-2 border-red-500 shadow-md">
+          <div class="flex items-center gap-2 min-w-0">
+            <span class="w-6 h-6 rounded-full bg-red-600 font-game font-bold text-xs flex items-center justify-center shrink-0">P1</span>
+            <span id="hudName0" class="font-game font-bold text-sm sm:text-base truncate">Pemain 1</span>
+          </div>
+          <div class="flex items-center gap-3 shrink-0">
+            <span class="flex items-center gap-1 text-amber-300 font-game font-bold text-sm sm:text-base">
+              🪙 <span id="hudCoins0">0</span>
+            </span>
+            <span class="bg-red-600 px-2.5 py-0.5 rounded-xl font-game font-bold text-sm sm:text-lg text-white">
+              <span id="hudScore0">0</span> PTS
+            </span>
+          </div>
+        </div>
+        <div class="w-full bg-slate-900/65 rounded-full h-3 p-0.5 border border-white/30 flex items-center relative">
+          <div id="hudProg0" class="h-full bg-gradient-to-r from-red-500 to-amber-400 rounded-full transition-all duration-150" style="width: 0%;"></div>
+          <span class="absolute right-1 text-[10px] leading-none">🚩</span>
+        </div>
+      </div>
+
+      <!-- Kontrol Sentuh Pemain 1 -->
+      <div id="touchControls0" class="absolute bottom-3 left-3 right-3 z-10 flex items-end justify-between pointer-events-none">
+        <div class="flex gap-2.5 sm:gap-3 pointer-events-auto">
+          <button data-player="0" data-action="left"
+            class="touch-btn w-16 h-16 sm:w-20 sm:h-20 rounded-2xl font-game text-2xl sm:text-3xl font-bold flex items-center justify-center">◀</button>
+          <button data-player="0" data-action="right"
+            class="touch-btn w-16 h-16 sm:w-20 sm:h-20 rounded-2xl font-game text-2xl sm:text-3xl font-bold flex items-center justify-center">▶</button>
+        </div>
+        <div class="pointer-events-auto">
+          <button data-player="0" data-action="jump"
+            class="touch-btn w-20 h-20 sm:w-24 sm:h-24 rounded-full font-game text-3xl sm:text-4xl font-bold flex items-center justify-center">▲</button>
+        </div>
+      </div>
+
+      <!-- Pop-up Soal Hobi P1 -->
+      <div id="quizModal0" class="hidden absolute inset-0 z-20 bg-slate-950/75 backdrop-blur-xs flex items-center justify-center p-2.5 sm:p-3">
+        <div id="quizCard0" class="animate-pop w-full max-w-md rounded-3xl border-4 shadow-2xl overflow-hidden bg-white">
+          <div id="quizHeader0" class="px-3.5 py-2 text-white font-game font-bold text-sm sm:text-lg flex items-center justify-between gap-2">
+            <span id="quizTitle0">⭐ TEBAK HOBI +10</span>
+            <span class="text-[11px] sm:text-xs bg-black/25 px-2 py-0.5 rounded-full shrink-0">1-4 / Sentuh</span>
+          </div>
+          <div class="p-3 sm:p-4">
+            <div class="text-center mb-2">
+              <span class="inline-block text-xs sm:text-sm font-extrabold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-3 py-0.5 rounded-full border border-indigo-200">
+                What hobby is this?
+              </span>
+            </div>
+            <div class="flex justify-center mb-3">
+              <div id="quizHobbySvg0" class="w-32 h-24 sm:w-40 sm:h-28 bg-sky-50 border-2 border-sky-200 rounded-2xl p-2 flex items-center justify-center shadow-inner"></div>
+            </div>
+            <div id="quizOptions0" class="grid grid-cols-2 gap-2 sm:gap-2.5"></div>
+            <div id="quizFeedback0" class="hidden mt-2.5 py-2 px-3 rounded-xl text-center font-game font-bold text-sm sm:text-base"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Overlay Selesai P1 -->
+      <div id="statusOverlay0" class="hidden absolute inset-0 z-20 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div id="statusCard0" class="animate-pop w-full max-w-sm bg-white rounded-3xl border-4 p-6 text-center shadow-2xl">
+          <div id="statusIcon0" class="text-5xl mb-2">🏁</div>
+          <h2 id="statusTitle0" class="font-game text-3xl font-bold mb-1">SELESAI!</h2>
+          <p id="statusDesc0" class="text-slate-600 font-bold text-sm sm:text-base mb-4">Menunggu lawan menyelesaikan permainan...</p>
+          <div class="bg-slate-100 rounded-2xl p-3 grid grid-cols-2 gap-2 font-bold text-slate-800">
+            <div>Skor: <span id="statusScore0" class="text-red-600 font-game text-xl">0</span></div>
+            <div>Koin: <span id="statusCoins0" class="text-amber-600 font-game text-xl">0</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Layar Kanan: Pemain 2 -->
+    <div id="pane1" class="relative w-1/2 h-full overflow-hidden border-l-4 border-slate-900">
+      <canvas id="canvas1" class="game-canvas"></canvas>
+      <div id="flash1" class="pointer-events-none absolute inset-0 z-20"></div>
+
+      <!-- HUD Pemain 2 -->
+      <div class="pointer-events-none absolute top-2 left-12 right-2 z-10 flex flex-col gap-1.5">
+        <div class="flex items-center justify-between bg-slate-900/80 backdrop-blur-sm text-white px-3 py-1.5 rounded-2xl border-2 border-emerald-500 shadow-md">
+          <div class="flex items-center gap-2 min-w-0">
+            <span class="w-6 h-6 rounded-full bg-emerald-600 font-game font-bold text-xs flex items-center justify-center shrink-0">P2</span>
+            <span id="hudName1" class="font-game font-bold text-sm sm:text-base truncate">Pemain 2</span>
+          </div>
+          <div class="flex items-center gap-3 shrink-0">
+            <span class="flex items-center gap-1 text-amber-300 font-game font-bold text-sm sm:text-base">
+              🪙 <span id="hudCoins1">0</span>
+            </span>
+            <span class="bg-emerald-600 px-2.5 py-0.5 rounded-xl font-game font-bold text-sm sm:text-lg text-white">
+              <span id="hudScore1">0</span> PTS
+            </span>
+          </div>
+        </div>
+        <div class="w-full bg-slate-900/65 rounded-full h-3 p-0.5 border border-white/30 flex items-center relative">
+          <div id="hudProg1" class="h-full bg-gradient-to-r from-emerald-500 to-amber-400 rounded-full transition-all duration-150" style="width: 0%;"></div>
+          <span class="absolute right-1 text-[10px] leading-none">🚩</span>
+        </div>
+      </div>
+
+      <!-- Kontrol Sentuh Pemain 2 -->
+      <div id="touchControls1" class="absolute bottom-3 left-3 right-3 z-10 flex items-end justify-between pointer-events-none">
+        <div class="flex gap-2.5 sm:gap-3 pointer-events-auto">
+          <button data-player="1" data-action="left"
+            class="touch-btn w-16 h-16 sm:w-20 sm:h-20 rounded-2xl font-game text-2xl sm:text-3xl font-bold flex items-center justify-center">◀</button>
+          <button data-player="1" data-action="right"
+            class="touch-btn w-16 h-16 sm:w-20 sm:h-20 rounded-2xl font-game text-2xl sm:text-3xl font-bold flex items-center justify-center">▶</button>
+        </div>
+        <div class="pointer-events-auto">
+          <button data-player="1" data-action="jump"
+            class="touch-btn w-20 h-20 sm:w-24 sm:h-24 rounded-full font-game text-3xl sm:text-4xl font-bold flex items-center justify-center">▲</button>
+        </div>
+      </div>
+
+      <!-- Pop-up Soal Hobi P2 -->
+      <div id="quizModal1" class="hidden absolute inset-0 z-20 bg-slate-950/75 backdrop-blur-xs flex items-center justify-center p-2.5 sm:p-3">
+        <div id="quizCard1" class="animate-pop w-full max-w-md rounded-3xl border-4 shadow-2xl overflow-hidden bg-white">
+          <div id="quizHeader1" class="px-3.5 py-2 text-white font-game font-bold text-sm sm:text-lg flex items-center justify-between gap-2">
+            <span id="quizTitle1">⭐ TEBAK HOBI +10</span>
+            <span class="text-[11px] sm:text-xs bg-black/25 px-2 py-0.5 rounded-full shrink-0">7-0 / Sentuh</span>
+          </div>
+          <div class="p-3 sm:p-4">
+            <div class="text-center mb-2">
+              <span class="inline-block text-xs sm:text-sm font-extrabold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-3 py-0.5 rounded-full border border-indigo-200">
+                What hobby is this?
+              </span>
+            </div>
+            <div class="flex justify-center mb-3">
+              <div id="quizHobbySvg1" class="w-32 h-24 sm:w-40 sm:h-28 bg-sky-50 border-2 border-sky-200 rounded-2xl p-2 flex items-center justify-center shadow-inner"></div>
+            </div>
+            <div id="quizOptions1" class="grid grid-cols-2 gap-2 sm:gap-2.5"></div>
+            <div id="quizFeedback1" class="hidden mt-2.5 py-2 px-3 rounded-xl text-center font-game font-bold text-sm sm:text-base"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Overlay Selesai P2 -->
+      <div id="statusOverlay1" class="hidden absolute inset-0 z-20 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div id="statusCard1" class="animate-pop w-full max-w-sm bg-white rounded-3xl border-4 p-6 text-center shadow-2xl">
+          <div id="statusIcon1" class="text-5xl mb-2">🏁</div>
+          <h2 id="statusTitle1" class="font-game text-3xl font-bold mb-1">SELESAI!</h2>
+          <p id="statusDesc1" class="text-slate-600 font-bold text-sm sm:text-base mb-4">Menunggu lawan menyelesaikan permainan...</p>
+          <div class="bg-slate-100 rounded-2xl p-3 grid grid-cols-2 gap-2 font-bold text-slate-800">
+            <div>Skor: <span id="statusScore1" class="text-emerald-600 font-game text-xl">0</span></div>
+            <div>Koin: <span id="statusCoins1" class="text-amber-600 font-game text-xl">0</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 3. LAYAR PEMENANG ==================== -->
+  <div id="winnerOverlay" class="hidden fixed inset-0 z-40 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="animate-pop w-full max-w-2xl bg-white rounded-3xl border-4 border-amber-400 shadow-2xl p-6 sm:p-8 text-center">
+      <div class="flex justify-center mb-2">
+        <div class="w-20 h-20 rounded-full border-4 border-amber-400 overflow-hidden shadow-md">
+          <img src="../bunda_shaumi.png" alt="Bunda Shaumi" class="w-full h-full object-cover" />
+        </div>
+      </div>
+      <h2 id="winnerHeadline" class="font-game text-3xl sm:text-5xl font-bold text-amber-500 mb-1">PEMAIN 1 MENANG!</h2>
+      <p id="winnerSubtext" class="text-slate-600 font-bold text-base sm:text-lg mb-6">Pertandingan seru selesai!</p>
+
+      <div id="winnerCardsGrid" class="grid grid-cols-2 gap-4 mb-6">
+        <div id="winCard0" class="rounded-2xl border-2 border-red-300 bg-red-50 p-4">
+          <div id="winName0" class="font-game text-xl sm:text-2xl font-bold text-red-700 truncate">Pemain 1</div>
+          <div id="winStatus0" class="text-xs font-extrabold uppercase tracking-wider text-red-500 mb-2">FINIS</div>
+          <div id="winScore0" class="font-game text-4xl sm:text-5xl font-bold text-slate-900 mb-3">0</div>
+          <div class="text-xs sm:text-sm font-bold text-slate-700 space-y-1 text-left bg-white/80 rounded-xl p-2.5">
+            <div class="flex justify-between"><span>🪙 Koin (+1):</span> <span id="winCoins0">0</span></div>
+            <div class="flex justify-between"><span>✅ Hobi Benar:</span> <span id="winCorrect0">0</span></div>
+            <div class="flex justify-between"><span>🚩 Bonus Finis:</span> <span id="winBonus0">+0</span></div>
+            <div class="flex justify-between"><span>⏱️ Waktu:</span> <span id="winTime0">0.0 dtk</span></div>
+          </div>
+        </div>
+
+        <div id="winCard1" class="rounded-2xl border-2 border-emerald-300 bg-emerald-50 p-4">
+          <div id="winName1" class="font-game text-xl sm:text-2xl font-bold text-emerald-700 truncate">Pemain 2</div>
+          <div id="winStatus1" class="text-xs font-extrabold uppercase tracking-wider text-emerald-600 mb-2">FINIS</div>
+          <div id="winScore1" class="font-game text-4xl sm:text-5xl font-bold text-slate-900 mb-3">0</div>
+          <div class="text-xs sm:text-sm font-bold text-slate-700 space-y-1 text-left bg-white/80 rounded-xl p-2.5">
+            <div class="flex justify-between"><span>🪙 Koin (+1):</span> <span id="winCoins1">0</span></div>
+            <div class="flex justify-between"><span>✅ Hobi Benar:</span> <span id="winCorrect1">0</span></div>
+            <div class="flex justify-between"><span>🚩 Bonus Finis:</span> <span id="winBonus1">+0</span></div>
+            <div class="flex justify-between"><span>⏱️ Waktu:</span> <span id="winTime1">0.0 dtk</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-3 justify-center">
+        <button id="btnPlayAgain"
+          class="btn-game flex-1 py-3.5 px-6 rounded-2xl bg-gradient-to-b from-emerald-400 to-emerald-600 text-white font-game text-2xl font-bold cursor-pointer">
+          🔄 MAIN LAGI
+        </button>
+        <button id="btnWinnerMenu"
+          class="btn-game py-3.5 px-6 rounded-2xl bg-gradient-to-b from-slate-600 to-slate-800 text-white font-game text-xl font-bold cursor-pointer">
+          🏠 MENU UTAMA
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 4. MODAL BANK SOAL ==================== -->
+  <div id="hobbyBankModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-5">
+    <div class="w-full max-w-4xl max-h-[92vh] bg-white rounded-3xl border-4 border-blue-500 shadow-2xl flex flex-col overflow-hidden">
+      <div class="bg-blue-600 text-white px-5 py-4 flex items-center justify-between shrink-0">
+        <div>
+          <h2 class="font-game text-2xl font-bold">📚 Bank Kosakata Hobi (Bunda Shaumi)</h2>
+          <p class="text-blue-100 text-xs sm:text-sm font-bold">Pilih hobi aktif untuk permainan. Ketuk 🔊 untuk dengar pelafalan.</p>
+        </div>
+        <button id="btnCloseHobbyBank" class="w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 text-white font-game text-xl font-bold cursor-pointer">✕</button>
+      </div>
+
+      <div id="hobbyBankMsg" class="hidden mx-5 mt-3 p-2.5 rounded-xl bg-amber-100 border-2 border-amber-400 text-amber-900 font-bold text-xs sm:text-sm text-center"></div>
+
+      <div id="hobbyBankGrid" class="flex-1 overflow-y-auto custom-scroll p-4 sm:p-5 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3"></div>
+
+      <div class="px-5 py-3 bg-slate-50 border-t-2 border-slate-200 flex items-center justify-between gap-2 shrink-0">
+        <button id="btnSelectAllHobbies" class="px-4 py-2 rounded-xl bg-blue-100 hover:bg-blue-200 text-blue-800 font-extrabold text-xs sm:text-sm cursor-pointer">
+          ✅ Pilih Semua
+        </button>
+        <button id="btnDoneHobbyBank" class="btn-game px-6 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-white font-game font-bold text-base cursor-pointer">
+          Selesai
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPT ENGINE PLATFORMER -->
+  <script src="../js/game-platformer.js"></script>
+</body>
+</html>

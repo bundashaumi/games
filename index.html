@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Learning English with Bunda Shaumi</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Google Fonts: Fredoka (Judul Game & Tombol 3D) & Nunito (Teks Rapi Mudah Dibaca) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Shared Data Bank & App Engine -->
+  <script src="js/data.js"></script>
+
+  <style>
+    :root {
+      --font-display: 'Fredoka', cursive, sans-serif;
+      --font-body: 'Nunito', sans-serif;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: #faf6ee;
+      background-image: 
+        radial-gradient(#e0d6c3 1.2px, transparent 1.2px),
+        radial-gradient(#eedfcc 1.2px, #faf6ee 1.2px);
+      background-size: 40px 40px;
+      background-position: 0 0, 20px 20px;
+      min-height: 100vh;
+      min-height: 100dvh;
+      color: #3b281c;
+      overflow-x: hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .font-game { font-family: var(--font-display); }
+
+    /* Efek Tombol 3D Ceria Kartun Anak (Playful Chunky 3D Buttons) */
+    .btn-chunky {
+      transition: transform 0.08s ease, box-shadow 0.08s ease, filter 0.12s ease;
+      cursor: pointer;
+    }
+    .btn-chunky:hover {
+      filter: brightness(1.04);
+    }
+    .btn-chunky:active {
+      transform: translateY(4px);
+    }
+
+    /* Tombol Merah Games */
+    .btn-nav-red {
+      background: linear-gradient(180deg, #ff5757 0%, #ee3838 100%);
+      border: 3.5px solid #5d1717;
+      box-shadow: 0 6px 0 #5d1717, 0 10px 16px rgba(0, 0, 0, 0.12);
+    }
+    .btn-nav-red:active {
+      box-shadow: 0 2px 0 #5d1717;
+    }
+
+    /* Tombol Hijau Modul */
+    .btn-nav-green {
+      background: linear-gradient(180deg, #48bb78 0%, #38a169 100%);
+      border: 3.5px solid #1a4d2e;
+      box-shadow: 0 6px 0 #1a4d2e, 0 10px 16px rgba(0, 0, 0, 0.12);
+    }
+    .btn-nav-green:active {
+      box-shadow: 0 2px 0 #1a4d2e;
+    }
+
+    /* Tombol Biru RPP */
+    .btn-nav-blue {
+      background: linear-gradient(180deg, #4299e1 0%, #3182ce 100%);
+      border: 3.5px solid #1a365d;
+      box-shadow: 0 6px 0 #1a365d, 0 10px 16px rgba(0, 0, 0, 0.12);
+    }
+    .btn-nav-blue:active {
+      box-shadow: 0 2px 0 #1a365d;
+    }
+
+    /* Tombol Oranye Asesmen */
+    .btn-nav-orange {
+      background: linear-gradient(180deg, #ed8936 0%, #dd6b20 100%);
+      border: 3.5px solid #7b341e;
+      box-shadow: 0 6px 0 #7b341e, 0 10px 16px rgba(0, 0, 0, 0.12);
+    }
+    .btn-nav-orange:active {
+      box-shadow: 0 2px 0 #7b341e;
+    }
+
+    /* Tombol Play Game Ceria */
+    .btn-play-red {
+      background: linear-gradient(180deg, #f87171 0%, #ef4444 100%);
+      border: 3px solid #7f1d1d;
+      box-shadow: 0 5px 0 #7f1d1d;
+    }
+    .btn-play-red:active { box-shadow: 0 2px 0 #7f1d1d; }
+
+    .btn-play-green {
+      background: linear-gradient(180deg, #4ade80 0%, #22c55e 100%);
+      border: 3px solid #14532d;
+      box-shadow: 0 5px 0 #14532d;
+    }
+    .btn-play-green:active { box-shadow: 0 2px 0 #14532d; }
+
+    .btn-play-orange {
+      background: linear-gradient(180deg, #fb923c 0%, #f97316 100%);
+      border: 3px solid #7c2d12;
+      box-shadow: 0 5px 0 #7c2d12;
+    }
+    .btn-play-orange:active { box-shadow: 0 2px 0 #7c2d12; }
+
+    .btn-play-pink {
+      background: linear-gradient(180deg, #f472b6 0%, #ec4899 100%);
+      border: 3px solid #831843;
+      box-shadow: 0 5px 0 #831843;
+    }
+    .btn-play-pink:active { box-shadow: 0 2px 0 #831843; }
+
+    /* Kartu Game Border Tebal Kartun */
+    .game-card-box {
+      border: 4px solid #4a3427;
+      border-radius: 28px;
+      box-shadow: 0 10px 0 rgba(74, 52, 39, 0.18), 0 16px 25px rgba(0, 0, 0, 0.08);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+    .game-card-box:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 0 rgba(74, 52, 39, 0.22), 0 22px 30px rgba(0, 0, 0, 0.12);
+    }
+
+    /* Speech Bubble Hello Kids */
+    .speech-bubble {
+      position: relative;
+      background: #ffffff;
+      border: 3px solid #3b281c;
+      border-radius: 20px;
+      box-shadow: 0 4px 0 #3b281c;
+    }
+    .speech-bubble::after {
+      content: '';
+      position: absolute;
+      left: -12px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-width: 7px 12px 7px 0;
+      border-style: solid;
+      border-color: transparent #ffffff transparent transparent;
+      display: block;
+      width: 0;
+    }
+    .speech-bubble::before {
+      content: '';
+      position: absolute;
+      left: -16px;
+      top: 50%;
+      transform: translateY(-50%);
+      border-width: 9px 15px 9px 0;
+      border-style: solid;
+      border-color: transparent #3b281c transparent transparent;
+      display: block;
+      width: 0;
+    }
+
+    /* Animasi Pop */
+    @keyframes popIn {
+      0% { transform: scale(0.9); opacity: 0; }
+      70% { transform: scale(1.03); opacity: 1; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    .anim-pop { animation: popIn 0.25s cubic-bezier(0.2, 1, 0.3, 1) forwards; }
+  </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+  <!-- =========================================================================
+       1. HEADER BANNER: "Learning English with Bunda Shaumi" + FOTO ASLI BUNDA SHAUMI
+       ========================================================================= -->
+  <header class="relative w-full overflow-hidden border-b-4 border-[#3b281c] bg-gradient-to-b from-[#38bdf8] to-[#0284c7] shadow-lg">
+    <!-- Hiasan Awan & Pensil Melayang -->
+    <div class="pointer-events-none absolute inset-0 overflow-hidden opacity-25">
+      <div class="absolute top-2 left-6 w-24 h-8 bg-white rounded-full"></div>
+      <div class="absolute top-8 left-20 w-32 h-10 bg-white rounded-full"></div>
+      <div class="absolute top-4 right-12 w-28 h-9 bg-white rounded-full"></div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 py-3 sm:py-4 flex flex-col md:flex-row items-center justify-between gap-3 relative z-10">
+      
+      <!-- Sisi Kiri: Bintang & Pensil Kartun -->
+      <div class="hidden lg:flex items-center gap-2">
+        <span class="text-3xl animate-bounce">✏️</span>
+        <span class="text-2xl text-amber-300">✨</span>
+      </div>
+
+      <!-- Bagian Tengah: Judul Besar Huruf Timbul Kartun -->
+      <div class="text-center flex-1">
+        <h1 class="font-game text-3xl sm:text-5xl lg:text-6xl font-bold tracking-wide text-white drop-shadow-[0_4px_0_#0369a1] leading-tight">
+          Learning English
+        </h1>
+        <h2 class="font-game text-2xl sm:text-4xl lg:text-5xl font-bold tracking-wide text-[#facc15] drop-shadow-[0_4px_0_#854d0e] -mt-1 sm:-mt-2">
+          with Bunda Shaumi
+        </h2>
+      </div>
+
+      <!-- Sisi Kanan: Karakter Istri Asli (Bunda Shaumi) + Balon Ucapan "Hello kids!" -->
+      <div class="flex items-center gap-3 shrink-0">
+        <!-- Balon Kata Kartun -->
+        <div class="speech-bubble px-3 py-1.5 sm:px-4 sm:py-2 text-center">
+          <div class="font-game font-bold text-sm sm:text-base text-slate-800 leading-none">Hello kids!</div>
+          <div class="text-[10px] sm:text-xs font-bold text-slate-500">Let's play & learn!</div>
+        </div>
+
+        <!-- Lingkaran Foto Bunda Shaumi -->
+        <div class="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full border-4 border-[#3b281c] bg-[#facc15] shadow-xl overflow-hidden shrink-0 flex items-center justify-center">
+          <img src="bunda_shaumi.png" alt="Bunda Shaumi" class="w-full h-full object-cover" onerror="this.src='bunda_shaumi.png'" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Pita Kuning Bawah Banner -->
+    <div class="w-full h-3 sm:h-4 bg-[#facc15] border-t-2 border-[#ca8a04]"></div>
+  </header>
+
+  <!-- =========================================================================
+       2. KONTEN UTAMA: SIDEBAR KIRI (GAMES, MODUL, RPP, ASESMEN) + GRID 4 GAME
+       ========================================================================= -->
+  <div class="max-w-7xl w-full mx-auto px-3 sm:px-6 py-5 sm:py-7 flex-1 flex flex-col md:flex-row gap-5 sm:gap-7 items-start">
+
+    <!-- ===== SIDEBAR KIRI ===== -->
+    <aside class="w-full md:w-60 lg:w-64 shrink-0 flex flex-col items-center md:items-stretch gap-3">
+      
+      <!-- Tombol 1: Games (Aktif) -->
+      <div class="w-full flex flex-col items-center">
+        <button id="navGames" type="button"
+          class="btn-chunky btn-nav-red w-full max-w-[260px] py-3 sm:py-3.5 rounded-full text-white font-game font-bold text-xl sm:text-2xl tracking-wider text-center flex items-center justify-center gap-2">
+          <span>🎮</span> Games
+        </button>
+      </div>
+
+      <!-- Tombol 2: Modul (Coming Soon) -->
+      <div class="w-full flex flex-col items-center">
+        <button id="navModul" type="button"
+          class="btn-chunky btn-nav-green w-full max-w-[260px] py-3 sm:py-3.5 rounded-full text-white font-game font-bold text-xl sm:text-2xl tracking-wider text-center flex items-center justify-center gap-2">
+          <span>📖</span> Modul
+        </button>
+        <span class="text-xs font-bold text-emerald-800 uppercase tracking-widest mt-1 bg-emerald-100/80 px-3 py-0.5 rounded-full border border-emerald-300">
+          coming soon
+        </span>
+      </div>
+
+      <!-- Tombol 3: RPP (Coming Soon) -->
+      <div class="w-full flex flex-col items-center">
+        <button id="navRPP" type="button"
+          class="btn-chunky btn-nav-blue w-full max-w-[260px] py-3 sm:py-3.5 rounded-full text-white font-game font-bold text-xl sm:text-2xl tracking-wider text-center flex items-center justify-center gap-2">
+          <span>📝</span> RPP
+        </button>
+        <span class="text-xs font-bold text-blue-800 uppercase tracking-widest mt-1 bg-blue-100/80 px-3 py-0.5 rounded-full border border-blue-300">
+          coming soon
+        </span>
+      </div>
+
+      <!-- Tombol 4: Asesmen (Coming Soon) -->
+      <div class="w-full flex flex-col items-center">
+        <button id="navAsesmen" type="button"
+          class="btn-chunky btn-nav-orange w-full max-w-[260px] py-3 sm:py-3.5 rounded-full text-white font-game font-bold text-xl sm:text-2xl tracking-wider text-center flex items-center justify-center gap-2">
+          <span>📊</span> Asesmen
+        </button>
+        <span class="text-xs font-bold text-amber-800 uppercase tracking-widest mt-1 bg-amber-100/80 px-3 py-0.5 rounded-full border border-amber-300">
+          coming soon
+        </span>
+      </div>
+
+      <!-- Ilustrasi Hiasan Alat Tulis Sekolah (Buku, Pensil, Penggaris, Angka) -->
+      <div class="hidden md:flex flex-col items-center mt-4 pt-4 border-t-2 border-[#d6c7b2] w-full text-center">
+        <div class="flex items-center justify-center gap-3 text-4xl mb-1">
+          <span class="transform -rotate-12 hover:rotate-0 transition-transform">📚</span>
+          <span class="transform rotate-12 hover:rotate-0 transition-transform">📏</span>
+          <span class="transform -rotate-6 hover:rotate-0 transition-transform">✏️</span>
+        </div>
+        <p class="font-game text-xs font-bold text-[#8d7561] tracking-wide">
+          SD Kelas 3 • Fun English
+        </p>
+      </div>
+    </aside>
+
+    <!-- ===== AREA GRID 4 GAME EDUKASI (KANAN) ===== -->
+    <main class="flex-1 w-full">
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
+
+        <!-- KARTU GAME 1: SUPER DUEL HOBBIES (PLATFORMER) -->
+        <div class="game-card-box bg-white p-4 sm:p-5 flex flex-col justify-between items-center text-center">
+          <!-- Ilustrasi Kartu -->
+          <div class="w-full h-36 sm:h-40 bg-gradient-to-b from-sky-100 to-emerald-100 rounded-2xl border-3 border-[#4a3427] flex items-center justify-center overflow-hidden mb-3 relative p-2 shadow-inner">
+            <div class="flex items-center gap-2 text-5xl">
+              <span>🏃</span><span>🪙</span><span>🚩</span>
+            </div>
+            <span class="absolute top-2 left-2 px-2.5 py-0.5 rounded-full bg-red-600 text-white font-game font-bold text-[11px] shadow">
+              DUEL & SOLO
+            </span>
+          </div>
+
+          <h3 class="font-game font-bold text-xl sm:text-2xl text-[#3b281c] mb-1 leading-tight">
+            Super Duel Hobbies
+          </h3>
+          <p class="text-xs sm:text-sm font-bold text-slate-500 mb-3.5">
+            Platformer seru ala Mario! Sundul kotak [?], jawab gambar hobi, capai bendera finis!
+          </p>
+
+          <div class="w-full flex items-center gap-2">
+            <button type="button" data-game="platformer"
+              class="btn-play-game btn-chunky btn-play-red flex-1 py-2.5 sm:py-3 rounded-2xl text-white font-game font-bold text-lg sm:text-xl tracking-wide flex items-center justify-center gap-1.5 shadow-md">
+              <span>▶</span> Play!
+            </button>
+            <button type="button" data-game="platformer" title="Kelola Soal Super Duel Hobbies"
+              class="btn-open-settings btn-chunky px-3 py-2.5 sm:py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 border-2 border-slate-300 font-game font-bold text-sm text-slate-700 flex items-center gap-1 shadow-sm">
+              <span>⚙️</span> Soal
+            </button>
+          </div>
+        </div>
+
+        <!-- KARTU GAME 2: DUEL TARIK TAMBANG HOBBIES (TUG OF WAR) -->
+        <div class="game-card-box bg-white p-4 sm:p-5 flex flex-col justify-between items-center text-center">
+          <!-- Ilustrasi Kartu -->
+          <div class="w-full h-36 sm:h-40 bg-gradient-to-b from-amber-100 to-rose-100 rounded-2xl border-3 border-[#4a3427] flex items-center justify-center overflow-hidden mb-3 relative p-2 shadow-inner">
+            <div class="flex items-center gap-2 text-5xl">
+              <span>🧒</span><span>🪢</span><span>👧</span>
+            </div>
+            <span class="absolute top-2 left-2 px-2.5 py-0.5 rounded-full bg-emerald-600 text-white font-game font-bold text-[11px] shadow">
+              1v1 & 60 DETIK
+            </span>
+          </div>
+
+          <h3 class="font-game font-bold text-xl sm:text-2xl text-[#3b281c] mb-1 leading-tight">
+            Duel Tarik Tambang
+          </h3>
+          <p class="text-xs sm:text-sm font-bold text-slate-500 mb-3.5">
+            Cepat tepat tebak gambar hobi! Tarik tali tambang ke arah timmu sampai garis menang!
+          </p>
+
+          <div class="w-full flex items-center gap-2">
+            <button type="button" data-game="tugofwar"
+              class="btn-play-game btn-chunky btn-play-green flex-1 py-2.5 sm:py-3 rounded-2xl text-white font-game font-bold text-lg sm:text-xl tracking-wide flex items-center justify-center gap-1.5 shadow-md">
+              <span>▶</span> Play!
+            </button>
+            <button type="button" data-game="tugofwar" title="Kelola Soal Tarik Tambang"
+              class="btn-open-settings btn-chunky px-3 py-2.5 sm:py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 border-2 border-slate-300 font-game font-bold text-sm text-slate-700 flex items-center gap-1 shadow-sm">
+              <span>⚙️</span> Soal
+            </button>
+          </div>
+        </div>
+
+        <!-- KARTU GAME 3: HOBBY MATCH (SAMBUNG & BUKA KARTU) -->
+        <div class="game-card-box bg-white p-4 sm:p-5 flex flex-col justify-between items-center text-center">
+          <!-- Ilustrasi Kartu -->
+          <div class="w-full h-36 sm:h-40 bg-gradient-to-b from-blue-100 to-pink-100 rounded-2xl border-3 border-[#4a3427] flex items-center justify-center overflow-hidden mb-3 relative p-2 shadow-inner">
+            <div class="flex items-center gap-2 text-5xl">
+              <span>🎯</span><span>🃏</span><span>🔗</span>
+            </div>
+            <span class="absolute top-2 left-2 px-2.5 py-0.5 rounded-full bg-indigo-600 text-white font-game font-bold text-[11px] shadow">
+              2 MODE MATCH
+            </span>
+          </div>
+
+          <h3 class="font-game font-bold text-xl sm:text-2xl text-[#3b281c] mb-1 leading-tight">
+            Hobby Match
+          </h3>
+          <p class="text-xs sm:text-sm font-bold text-slate-500 mb-3.5">
+            Sambungkan gambar dengan namanya lewat garis ceria, atau uji memori dengan buka kartu 1–10!
+          </p>
+
+          <div class="w-full flex items-center gap-2">
+            <button type="button" data-game="match"
+              class="btn-play-game btn-chunky btn-play-orange flex-1 py-2.5 sm:py-3 rounded-2xl text-white font-game font-bold text-lg sm:text-xl tracking-wide flex items-center justify-center gap-1.5 shadow-md">
+              <span>▶</span> Play!
+            </button>
+            <button type="button" data-game="match" title="Kelola Soal Hobby Match"
+              class="btn-open-settings btn-chunky px-3 py-2.5 sm:py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 border-2 border-slate-300 font-game font-bold text-sm text-slate-700 flex items-center gap-1 shadow-sm">
+              <span>⚙️</span> Soal
+            </button>
+          </div>
+        </div>
+
+        <!-- KARTU GAME 4: WORD SEARCH: HOBBIES (CARI KATA) -->
+        <div class="game-card-box bg-white p-4 sm:p-5 flex flex-col justify-between items-center text-center">
+          <!-- Ilustrasi Kartu -->
+          <div class="w-full h-36 sm:h-40 bg-gradient-to-b from-yellow-100 to-purple-100 rounded-2xl border-3 border-[#4a3427] flex items-center justify-center overflow-hidden mb-3 relative p-2 shadow-inner">
+            <div class="flex items-center gap-2 text-5xl">
+              <span>🔎</span><span>🔤</span><span>⭐</span>
+            </div>
+            <span class="absolute top-2 left-2 px-2.5 py-0.5 rounded-full bg-pink-600 text-white font-game font-bold text-[11px] shadow">
+              GRID 9x9
+            </span>
+          </div>
+
+          <h3 class="font-game font-bold text-xl sm:text-2xl text-[#3b281c] mb-1 leading-tight">
+            Word Search: Hobbies
+          </h3>
+          <p class="text-xs sm:text-sm font-bold text-slate-500 mb-3.5">
+            Cari kata hobi bahasa Inggris di kotak huruf dengan stabilo warna-warni! Geser atau ketuk!
+          </p>
+
+          <div class="w-full flex items-center gap-2">
+            <button type="button" data-game="wordsearch"
+              class="btn-play-game btn-chunky btn-play-pink flex-1 py-2.5 sm:py-3 rounded-2xl text-white font-game font-bold text-lg sm:text-xl tracking-wide flex items-center justify-center gap-1.5 shadow-md">
+              <span>▶</span> Play!
+            </button>
+            <button type="button" data-game="wordsearch" title="Kelola Soal Word Search"
+              class="btn-open-settings btn-chunky px-3 py-2.5 sm:py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 border-2 border-slate-300 font-game font-bold text-sm text-slate-700 flex items-center gap-1 shadow-sm">
+              <span>⚙️</span> Soal
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- =========================================================================
+       3. MODAL GAME LAUNCHER (SPA + FULLSCREEN)
+       ========================================================================= -->
+  <div id="gameModal" class="hidden fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-sm flex-col">
+    <!-- Bar Kontrol Atas Modal Game -->
+    <div class="w-full bg-slate-900 px-4 py-2 flex items-center justify-between border-b-2 border-slate-700 shrink-0">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-full overflow-hidden border-2 border-amber-400 shrink-0">
+          <img src="bunda_shaumi.png" alt="Bunda Shaumi" class="w-full h-full object-cover" />
+        </div>
+        <div class="font-game text-white text-base sm:text-xl font-bold truncate" id="gameModalTitle">
+          Game Title
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button id="btnGameModalSettings" title="Kelola Soal Game Ini"
+          class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-600 text-slate-200 font-game font-bold text-xs sm:text-sm flex items-center gap-1 cursor-pointer">
+          <span>⚙️</span> <span class="hidden sm:inline">Kelola Soal</span>
+        </button>
+        <button id="btnFullscreenGame" title="Layar Penuh (Fullscreen)"
+          class="px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-game font-bold text-xs sm:text-sm flex items-center gap-1 cursor-pointer">
+          <span>⛶</span> <span class="hidden sm:inline">Fullscreen</span>
+        </button>
+        <button id="btnCloseGameModal" title="Tutup Game & Kembali ke Menu"
+          class="w-9 h-9 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-game font-bold text-lg flex items-center justify-center cursor-pointer">
+          ✕
+        </button>
+      </div>
+    </div>
+
+    <!-- Iframe Game Mandiri -->
+    <div class="flex-1 w-full h-full relative bg-slate-950">
+      <iframe id="gameIframe" src="about:blank" class="w-full h-full border-0" allow="fullscreen"></iframe>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       4. MODAL SETTINGS / BANK SOAL (CRUD, CSV, GOOGLE SPREADSHEET)
+       ========================================================================= -->
+  <div id="settingsModal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm items-center justify-center p-3 sm:p-5">
+    <div class="w-full max-w-4xl max-h-[92vh] bg-white rounded-3xl border-4 border-indigo-600 shadow-2xl flex flex-col overflow-hidden anim-pop">
+      
+      <!-- Header Modal Settings -->
+      <div class="bg-indigo-600 text-white px-5 py-3.5 flex items-center justify-between shrink-0">
+        <div class="flex items-center gap-2.5">
+          <span class="text-2xl">⚙️</span>
+          <div>
+            <h2 class="font-game text-xl sm:text-2xl font-bold">Kelola Soal & Integrasi Spreadsheet</h2>
+            <p class="text-indigo-100 text-xs sm:text-sm font-bold">Atur kosakata hobi, unduh/unggah CSV, atau hubungkan ke Google Sheets</p>
+          </div>
+        </div>
+        <button id="btnCloseSettings" class="w-9 h-9 rounded-full bg-white/20 hover:bg-white/30 text-white font-game font-bold text-lg flex items-center justify-center cursor-pointer">✕</button>
+      </div>
+
+      <!-- Isi Kontrol Settings -->
+      <div class="flex-1 overflow-y-auto p-4 sm:p-5 flex flex-col gap-5">
+
+        <!-- Baris 1: Filter Game & Aksi Utama (CSV + Spreadsheet) -->
+        <div class="bg-slate-50 border-2 border-slate-200 rounded-2xl p-4 flex flex-col gap-3">
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
+              <label for="settingsGameSelect" class="font-bold text-xs sm:text-sm text-slate-700">Terapkan untuk Game:</label>
+              <select id="settingsGameSelect" class="px-3 py-1.5 rounded-xl border-2 border-indigo-300 font-bold text-sm bg-white text-indigo-900 focus:outline-none focus:border-indigo-600 cursor-pointer">
+                <option value="all">🌐 Semua Game (Global)</option>
+                <option value="platformer">🏃 Super Duel Hobbies</option>
+                <option value="tugofwar">🪢 Duel Tarik Tambang</option>
+                <option value="match">🎯 Hobby Match</option>
+                <option value="wordsearch">🔎 Word Search</option>
+              </select>
+            </div>
+
+            <!-- Tombol CSV & Reset -->
+            <div class="flex flex-wrap items-center gap-2">
+              <button id="btnDownloadCSV" type="button"
+                class="px-3 py-1.5 rounded-xl bg-blue-100 hover:bg-blue-200 text-blue-800 font-bold text-xs sm:text-sm border border-blue-300 flex items-center gap-1 cursor-pointer">
+                <span>📥</span> Unduh Template CSV
+              </button>
+              <button id="btnTriggerUploadCSV" type="button"
+                class="px-3 py-1.5 rounded-xl bg-emerald-100 hover:bg-emerald-200 text-emerald-800 font-bold text-xs sm:text-sm border border-emerald-300 flex items-center gap-1 cursor-pointer">
+                <span>📤</span> Upload File CSV
+              </button>
+              <input type="file" id="fileUploadCSV" accept=".csv" class="hidden" />
+              <button id="btnResetDefault" type="button"
+                class="px-3 py-1.5 rounded-xl bg-rose-100 hover:bg-rose-200 text-rose-800 font-bold text-xs sm:text-sm border border-rose-300 flex items-center gap-1 cursor-pointer">
+                <span>🔄</span> Reset Bawaan
+              </button>
+            </div>
+          </div>
+
+          <!-- Integrasi Google Spreadsheet Langsung -->
+          <div class="pt-3 border-t border-slate-200">
+            <label class="block font-bold text-xs sm:text-sm text-slate-700 mb-1">
+              🔗 Sinkronisasi Tautan Google Spreadsheet (Otomatis):
+            </label>
+            <div class="flex flex-col sm:flex-row gap-2">
+              <input id="inputSheetUrl" type="url"
+                class="flex-1 px-3 py-2 rounded-xl border-2 border-slate-300 focus:border-indigo-500 focus:outline-none text-xs sm:text-sm bg-white"
+                placeholder="https://docs.google.com/spreadsheets/d/ID_SPREADSHEET/edit... (Disetel Public/Bisa Dilihat Siapa Saja)" />
+              <button id="btnSyncSheet" type="button"
+                class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-game font-bold text-xs sm:text-sm flex items-center justify-center gap-1.5 shrink-0 shadow-sm cursor-pointer">
+                <span>🔗</span> Sinkronkan Sekarang
+              </button>
+            </div>
+            <p class="text-[11px] font-bold text-slate-400 mt-1">
+              💡 Bunda Shaumi cukup edit tabel di Google Sheets, klik "Sinkronkan", soal langsung terupdate di semua game tanpa perlu edit kode!
+            </p>
+          </div>
+        </div>
+
+        <!-- Baris 2: Form Tambah / Edit Kosakata Cepat -->
+        <div class="bg-indigo-50/70 border-2 border-indigo-200 rounded-2xl p-4">
+          <h3 class="font-game font-bold text-sm sm:text-base text-indigo-900 mb-2">➕ Tambah Kosakata Hobi Baru:</h3>
+          <form id="formAddHobby" class="grid grid-cols-1 sm:grid-cols-5 gap-2.5 items-end">
+            <div>
+              <label class="block text-[11px] font-bold text-slate-600 mb-0.5">Kata (English):</label>
+              <input id="inputHobbyWord" type="text" required maxlength="14" placeholder="Contoh: SKATING"
+                class="w-full px-3 py-1.5 rounded-xl border border-slate-300 focus:border-indigo-500 focus:outline-none text-xs sm:text-sm font-bold uppercase bg-white" />
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-600 mb-0.5">Artinya (Indonesia):</label>
+              <input id="inputHobbyMeaning" type="text" required maxlength="24" placeholder="Contoh: Sepatu Roda"
+                class="w-full px-3 py-1.5 rounded-xl border border-slate-300 focus:border-indigo-500 focus:outline-none text-xs sm:text-sm font-bold bg-white" />
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-600 mb-0.5">Petunjuk Singkat:</label>
+              <input id="inputHobbyHint" type="text" maxlength="32" placeholder="Contoh: Meluncur di lintasan"
+                class="w-full px-3 py-1.5 rounded-xl border border-slate-300 focus:border-indigo-500 focus:outline-none text-xs sm:text-sm bg-white" />
+            </div>
+            <div>
+              <label class="block text-[11px] font-bold text-slate-600 mb-0.5">Gambar Kartun:</label>
+              <select id="selectHobbyIcon" class="w-full px-2.5 py-1.5 rounded-xl border border-slate-300 text-xs sm:text-sm font-bold bg-white focus:outline-none">
+                <option value="reading">📖 Reading</option>
+                <option value="singing">🎤 Singing</option>
+                <option value="dancing">💃 Dancing</option>
+                <option value="cooking">🍳 Cooking</option>
+                <option value="fishing">🎣 Fishing</option>
+                <option value="drawing">✏️ Drawing</option>
+                <option value="swimming">🏊 Swimming</option>
+                <option value="cycling">🚲 Cycling</option>
+                <option value="painting">🎨 Painting</option>
+                <option value="camping">⛺ Camping</option>
+                <option value="running">🏃 Running</option>
+                <option value="gardening">🪴 Gardening</option>
+                <option value="writing">📝 Writing</option>
+                <option value="baking">🧁 Baking</option>
+                <option value="playing">⚽ Playing</option>
+                <option value="default">⭐ Bintang Kartun</option>
+              </select>
+            </div>
+            <div>
+              <button type="submit"
+                class="w-full py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-game font-bold text-xs sm:text-sm cursor-pointer shadow-sm">
+                ➕ Simpan Soal
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Baris 3: Tabel Daftar Soal Aktif -->
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <h3 class="font-game font-bold text-sm sm:text-base text-slate-800">Daftar Soal yang Sedang Digunakan:</h3>
+            <span class="text-xs font-bold text-slate-500">Minimal 4 soal aktif</span>
+          </div>
+          <div class="border-2 border-slate-200 rounded-2xl overflow-hidden max-h-64 overflow-y-auto">
+            <table class="w-full text-left border-collapse">
+              <thead class="bg-slate-100 text-slate-600 font-game text-xs sm:text-sm uppercase tracking-wider sticky top-0 border-b-2 border-slate-200">
+                <tr>
+                  <th class="py-2 px-3 text-center w-12">#</th>
+                  <th class="py-2 px-3 w-16">Gambar</th>
+                  <th class="py-2 px-3">Kosakata & Petunjuk</th>
+                  <th class="py-2 px-3">Arti (Bahasa Indonesia)</th>
+                  <th class="py-2 px-3 text-right w-24">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="hobbyTableBody" class="text-xs sm:text-sm font-bold text-slate-700 divide-y divide-slate-100">
+                <!-- Diisi via JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       5. MODAL COMING SOON (MODUL, RPP, ASESMEN)
+       ========================================================================= -->
+  <div id="comingSoonModal" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 text-center shadow-2xl border-4 border-amber-400 anim-pop">
+      <div class="w-20 h-20 mx-auto rounded-full overflow-hidden border-4 border-amber-400 shadow-md mb-3">
+        <img src="bunda_shaumi.png" alt="Bunda Shaumi" class="w-full h-full object-cover" />
+      </div>
+      <h3 id="comingSoonTitle" class="font-game text-2xl font-bold text-indigo-700 mb-2">Coming Soon!</h3>
+      <p id="comingSoonDesc" class="text-slate-600 font-bold text-sm mb-5 leading-relaxed">
+        Modul Ajar sedang disiapkan oleh Bunda Shaumi untuk anak-anak hebat!
+      </p>
+      <button id="btnCloseComingSoon" type="button"
+        class="w-full py-3 rounded-2xl bg-gradient-to-b from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-amber-950 font-game font-bold text-lg shadow-md cursor-pointer border-b-4 border-amber-700">
+        Siap, Bunda! 👍
+      </button>
+    </div>
+  </div>
+
+  <!-- Wadah Toast Notifikasi -->
+  <div id="toastContainer" class="fixed top-5 right-5 z-50 pointer-events-none flex flex-col gap-2 max-w-sm"></div>
+
+  <!-- =========================================================================
+       6. SCRIPT CONTROLLER PORTAL
+       ========================================================================= -->
+  <script src="js/app.js"></script>
+</body>
+</html>
