@@ -23,6 +23,19 @@ Web aplikasi pembelajaran interaktif Bahasa Inggris untuk siswa Kelas 3 Sekolah 
 
 ---
 
+## 📖 Modul Pembelajaran Canva & 💬 Umpan Balik Siswa
+
+- **📖 Modul Pembelajaran Slide Canva:**
+  - Slide show resmi Canva karya Bu **Yani Indriani** tersaji langsung di dalam web dengan rasio 16:9 yang responsif.
+  - Dilengkapi tombol **⛶ Layar Penuh (Fullscreen)** untuk kemudahan presentasi guru di TV Touchscreen atau proyektor kelas.
+- **💬 Umpan Balik Interaktif ("How do you feel about today's lesson?"):**
+  - Refleksi emosi belajar siswa kelas 3 SD.
+  - Siswa dapat men-**drag and drop** (atau menyentuh/klik) emotikon ke dalam **[ KOTAK KOSONG ]**.
+  - Pilihan 7 emotikon ekspresif: Senyum (😊), Senang (🤩), Semangat (💪), Biasa (😐), Sedih (😢), Marah (😡), dan Bingung (🤔).
+  - Dilengkapi efek suara sintetis (*Web Audio API*), taburan konfeti ceria, respon dialog motivasi Bunda Shaumi, dan pencatatan statistik respon untuk guru.
+
+---
+
 ## ✨ Fitur Unggulan
 
 - **Karakter Asli Bunda Shaumi:** Maskot ramah anak di header banner dengan sapaan *"Hello kids!"* serta hadir sebagai avatar pembimbing di dalam setiap permainan.

@@ -91,6 +91,22 @@
       box-shadow: 0 2px 0 #7b341e;
     }
 
+    /* Tombol Ungu Umpan Balik (Feedback) */
+    .btn-nav-purple {
+      background: linear-gradient(180deg, #a855f7 0%, #9333ea 100%);
+      border: 3.5px solid #581c87;
+      box-shadow: 0 6px 0 #581c87, 0 10px 16px rgba(0, 0, 0, 0.12);
+    }
+    .btn-nav-purple:active {
+      box-shadow: 0 2px 0 #581c87;
+    }
+
+    /* Indikator Tombol Sidebar Aktif */
+    .nav-btn-active {
+      transform: translateY(3px);
+      filter: brightness(1.08) drop-shadow(0 0 8px rgba(250, 204, 21, 0.7));
+    }
+
     /* Tombol Play Game Ceria */
     .btn-play-red {
       background: linear-gradient(180deg, #f87171 0%, #ef4444 100%);
@@ -172,6 +188,86 @@
       100% { transform: scale(1); opacity: 1; }
     }
     .anim-pop { animation: popIn 0.25s cubic-bezier(0.2, 1, 0.3, 1) forwards; }
+
+    /* Fullscreen Mode Styling untuk Canva Embed */
+    #canvaEmbedWrapper:fullscreen {
+      width: 100vw !important;
+      height: 100vh !important;
+      max-width: none !important;
+      max-height: none !important;
+      padding-top: 0 !important;
+      border: none !important;
+      border-radius: 0 !important;
+      background: #000000 !important;
+      position: fixed !important;
+      inset: 0 !important;
+      z-index: 99999 !important;
+    }
+    #canvaEmbedWrapper:fullscreen #canvaIframe {
+      width: 100% !important;
+      height: 100% !important;
+      top: 0 !important;
+      left: 0 !important;
+      position: absolute !important;
+    }
+    #canvaEmbedWrapper:fullscreen #btnFloatingExitFullscreen {
+      display: flex !important;
+    }
+
+    /* 3D Animated Emoticon Keyframes */
+    @keyframes anim3DFloat {
+      0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+      50% { transform: translateY(-7px) rotate(2deg) scale(1.05); }
+    }
+    @keyframes anim3DStarBounce {
+      0%, 100% { transform: translateY(0) scale(1); }
+      30% { transform: translateY(-10px) scale(1.12) rotate(-4deg); }
+      60% { transform: translateY(-2px) scale(0.96) rotate(3deg); }
+    }
+    @keyframes anim3DPump {
+      0%, 100% { transform: scale(1) rotate(0deg); }
+      25% { transform: scale(1.15) rotate(-6deg); }
+      50% { transform: scale(1.05) rotate(4deg); }
+      75% { transform: scale(1.18) rotate(-4deg); }
+    }
+    @keyframes anim3DCalm {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05) translateY(-3px); }
+    }
+    @keyframes anim3DTear {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(4px) scale(0.96) rotate(-2deg); }
+    }
+    @keyframes anim3DFiery {
+      0%, 100% { transform: translateX(0) scale(1); }
+      20% { transform: translateX(-3px) rotate(-3deg) scale(1.08); }
+      40% { transform: translateX(3px) rotate(3deg) scale(1.08); }
+      60% { transform: translateX(-2px) rotate(-1deg); }
+      80% { transform: translateX(2px) rotate(1deg); }
+    }
+    @keyframes anim3DThinking {
+      0%, 100% { transform: rotate(0deg) scale(1); }
+      35% { transform: rotate(-10deg) translateY(-5px) scale(1.06); }
+      70% { transform: rotate(8deg) translateY(-2px) scale(1.02); }
+    }
+
+    .anim-3d-senyum { animation: anim3DFloat 2.8s ease-in-out infinite; }
+    .anim-3d-senang { animation: anim3DStarBounce 1.8s ease-in-out infinite; }
+    .anim-3d-semangat { animation: anim3DPump 1.6s ease-in-out infinite; }
+    .anim-3d-biasa { animation: anim3DCalm 3.2s ease-in-out infinite; }
+    .anim-3d-sedih { animation: anim3DTear 2.4s ease-in-out infinite; }
+    .anim-3d-marah { animation: anim3DFiery 1.4s ease-in-out infinite; }
+    .anim-3d-bingung { animation: anim3DThinking 2.6s ease-in-out infinite; }
+
+    /* Efek Kartu Emotikon 3D Clay Glossy */
+    .emote-3d-card {
+      filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.12));
+      transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.15s ease;
+    }
+    .emote-3d-card:hover {
+      transform: translateY(-4px) scale(1.06);
+      filter: drop-shadow(0 10px 16px rgba(0, 0, 0, 0.18));
+    }
   </style>
 </head>
 <body class="flex flex-col min-h-screen">
@@ -235,26 +331,31 @@
       <!-- Tombol 1: Games (Aktif) -->
       <div class="w-full flex flex-col items-center">
         <button id="navGames" type="button"
-          class="btn-chunky btn-nav-red w-full max-w-[260px] py-3 sm:py-3.5 rounded-full text-white font-game font-bold text-xl sm:text-2xl tracking-wider text-center flex items-center justify-center gap-2">
+          class="btn-chunky btn-nav-red w-full max-w-[260px] py-3 sm:py-3.5 rounded-full text-white font-game font-bold text-xl sm:text-2xl tracking-wider text-center flex items-center justify-center gap-2 nav-btn-active">
           <span>🎮</span> Games
         </button>
       </div>
 
-      <!-- Tombol 2: Modul (Coming Soon) -->
+      <!-- Tombol 2: Modul (Aktif - Materi Canva) -->
       <div class="w-full flex flex-col items-center">
         <button id="navModul" type="button"
           class="btn-chunky btn-nav-green w-full max-w-[260px] py-3 sm:py-3.5 rounded-full text-white font-game font-bold text-xl sm:text-2xl tracking-wider text-center flex items-center justify-center gap-2">
           <span>📖</span> Modul
         </button>
-        <span class="text-xs font-bold text-emerald-800 uppercase tracking-widest mt-1 bg-emerald-100/80 px-3 py-0.5 rounded-full border border-emerald-300">
-          coming soon
-        </span>
+      </div>
+
+      <!-- Tombol Baru: Umpan Balik (Aktif - Refleksi Siswa) -->
+      <div class="w-full flex flex-col items-center">
+        <button id="navFeedback" type="button"
+          class="btn-chunky btn-nav-purple w-full max-w-[260px] py-3 sm:py-3.5 rounded-full text-white font-game font-bold text-xl sm:text-2xl tracking-wider text-center flex items-center justify-center gap-2">
+          <span>💬</span> Umpan Balik
+        </button>
       </div>
 
       <!-- Tombol 3: RPP (Coming Soon) -->
       <div class="w-full flex flex-col items-center">
         <button id="navRPP" type="button"
-          class="btn-chunky btn-nav-blue w-full max-w-[260px] py-3 sm:py-3.5 rounded-full text-white font-game font-bold text-xl sm:text-2xl tracking-wider text-center flex items-center justify-center gap-2">
+          class="btn-chunky btn-nav-blue w-full max-w-[260px] py-3 sm:py-3.5 rounded-full text-white font-game font-bold text-xl sm:text-2xl tracking-wider text-center flex items-center justify-center gap-2 opacity-85">
           <span>📝</span> RPP
         </button>
         <span class="text-xs font-bold text-blue-800 uppercase tracking-widest mt-1 bg-blue-100/80 px-3 py-0.5 rounded-full border border-blue-300">
@@ -265,7 +366,7 @@
       <!-- Tombol 4: Asesmen (Coming Soon) -->
       <div class="w-full flex flex-col items-center">
         <button id="navAsesmen" type="button"
-          class="btn-chunky btn-nav-orange w-full max-w-[260px] py-3 sm:py-3.5 rounded-full text-white font-game font-bold text-xl sm:text-2xl tracking-wider text-center flex items-center justify-center gap-2">
+          class="btn-chunky btn-nav-orange w-full max-w-[260px] py-3 sm:py-3.5 rounded-full text-white font-game font-bold text-xl sm:text-2xl tracking-wider text-center flex items-center justify-center gap-2 opacity-85">
           <span>📊</span> Asesmen
         </button>
         <span class="text-xs font-bold text-amber-800 uppercase tracking-widest mt-1 bg-amber-100/80 px-3 py-0.5 rounded-full border border-amber-300">
@@ -286,135 +387,315 @@
       </div>
     </aside>
 
-    <!-- ===== AREA GRID 4 GAME EDUKASI (KANAN) ===== -->
+    <!-- ===== AREA UTAMA (VIEW SWITCHER: GAMES / MODUL / UMPAN BALIK) ===== -->
     <main class="flex-1 w-full">
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
 
-        <!-- KARTU GAME 1: SUPER DUEL HOBBIES (PLATFORMER) -->
-        <div class="game-card-box bg-white p-4 sm:p-5 flex flex-col justify-between items-center text-center">
-          <!-- Ilustrasi Kartu -->
-          <div class="w-full h-36 sm:h-40 bg-gradient-to-b from-sky-100 to-emerald-100 rounded-2xl border-3 border-[#4a3427] flex items-center justify-center overflow-hidden mb-3 relative p-2 shadow-inner">
-            <div class="flex items-center gap-2 text-5xl">
-              <span>🏃</span><span>🪙</span><span>🚩</span>
+      <!-- VIEW 1: GRID 4 GAME EDUKASI -->
+      <section id="viewGames" class="block anim-pop">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
+
+          <!-- KARTU GAME 1: SUPER DUEL HOBBIES (PLATFORMER) -->
+          <div class="game-card-box bg-white p-4 sm:p-5 flex flex-col justify-between items-center text-center">
+            <!-- Ilustrasi Kartu -->
+            <div class="w-full h-36 sm:h-40 bg-gradient-to-b from-sky-100 to-emerald-100 rounded-2xl border-3 border-[#4a3427] flex items-center justify-center overflow-hidden mb-3 relative p-2 shadow-inner">
+              <div class="flex items-center gap-2 text-5xl">
+                <span>🏃</span><span>🪙</span><span>🚩</span>
+              </div>
+              <span class="absolute top-2 left-2 px-2.5 py-0.5 rounded-full bg-red-600 text-white font-game font-bold text-[11px] shadow">
+                DUEL & SOLO
+              </span>
             </div>
-            <span class="absolute top-2 left-2 px-2.5 py-0.5 rounded-full bg-red-600 text-white font-game font-bold text-[11px] shadow">
-              DUEL & SOLO
-            </span>
-          </div>
 
-          <h3 class="font-game font-bold text-xl sm:text-2xl text-[#3b281c] mb-1 leading-tight">
-            Super Duel Hobbies
-          </h3>
-          <p class="text-xs sm:text-sm font-bold text-slate-500 mb-3.5">
-            Platformer seru ala Mario! Sundul kotak [?], jawab gambar hobi, capai bendera finis!
-          </p>
+            <h3 class="font-game font-bold text-xl sm:text-2xl text-[#3b281c] mb-1 leading-tight">
+              Super Duel Hobbies
+            </h3>
+            <p class="text-xs sm:text-sm font-bold text-slate-500 mb-3.5">
+              Platformer seru ala Mario! Sundul kotak [?], jawab gambar hobi, capai bendera finis!
+            </p>
 
-          <div class="w-full flex items-center gap-2">
-            <button type="button" data-game="platformer"
-              class="btn-play-game btn-chunky btn-play-red flex-1 py-2.5 sm:py-3 rounded-2xl text-white font-game font-bold text-lg sm:text-xl tracking-wide flex items-center justify-center gap-1.5 shadow-md">
-              <span>▶</span> Play!
-            </button>
-            <button type="button" data-game="platformer" title="Kelola Soal Super Duel Hobbies"
-              class="btn-open-settings btn-chunky px-3 py-2.5 sm:py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 border-2 border-slate-300 font-game font-bold text-sm text-slate-700 flex items-center gap-1 shadow-sm">
-              <span>⚙️</span> Soal
-            </button>
-          </div>
-        </div>
-
-        <!-- KARTU GAME 2: DUEL TARIK TAMBANG HOBBIES (TUG OF WAR) -->
-        <div class="game-card-box bg-white p-4 sm:p-5 flex flex-col justify-between items-center text-center">
-          <!-- Ilustrasi Kartu -->
-          <div class="w-full h-36 sm:h-40 bg-gradient-to-b from-amber-100 to-rose-100 rounded-2xl border-3 border-[#4a3427] flex items-center justify-center overflow-hidden mb-3 relative p-2 shadow-inner">
-            <div class="flex items-center gap-2 text-5xl">
-              <span>🧒</span><span>🪢</span><span>👧</span>
+            <div class="w-full flex items-center gap-2">
+              <button type="button" data-game="platformer"
+                class="btn-play-game btn-chunky btn-play-red flex-1 py-2.5 sm:py-3 rounded-2xl text-white font-game font-bold text-lg sm:text-xl tracking-wide flex items-center justify-center gap-1.5 shadow-md">
+                <span>▶</span> Play!
+              </button>
+              <button type="button" data-game="platformer" title="Kelola Soal Super Duel Hobbies"
+                class="btn-open-settings btn-chunky px-3 py-2.5 sm:py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 border-2 border-slate-300 font-game font-bold text-sm text-slate-700 flex items-center gap-1 shadow-sm">
+                <span>⚙️</span> Soal
+              </button>
             </div>
-            <span class="absolute top-2 left-2 px-2.5 py-0.5 rounded-full bg-emerald-600 text-white font-game font-bold text-[11px] shadow">
-              1v1 & 60 DETIK
-            </span>
           </div>
 
-          <h3 class="font-game font-bold text-xl sm:text-2xl text-[#3b281c] mb-1 leading-tight">
-            Duel Tarik Tambang
-          </h3>
-          <p class="text-xs sm:text-sm font-bold text-slate-500 mb-3.5">
-            Cepat tepat tebak gambar hobi! Tarik tali tambang ke arah timmu sampai garis menang!
-          </p>
-
-          <div class="w-full flex items-center gap-2">
-            <button type="button" data-game="tugofwar"
-              class="btn-play-game btn-chunky btn-play-green flex-1 py-2.5 sm:py-3 rounded-2xl text-white font-game font-bold text-lg sm:text-xl tracking-wide flex items-center justify-center gap-1.5 shadow-md">
-              <span>▶</span> Play!
-            </button>
-            <button type="button" data-game="tugofwar" title="Kelola Soal Tarik Tambang"
-              class="btn-open-settings btn-chunky px-3 py-2.5 sm:py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 border-2 border-slate-300 font-game font-bold text-sm text-slate-700 flex items-center gap-1 shadow-sm">
-              <span>⚙️</span> Soal
-            </button>
-          </div>
-        </div>
-
-        <!-- KARTU GAME 3: HOBBY MATCH (SAMBUNG & BUKA KARTU) -->
-        <div class="game-card-box bg-white p-4 sm:p-5 flex flex-col justify-between items-center text-center">
-          <!-- Ilustrasi Kartu -->
-          <div class="w-full h-36 sm:h-40 bg-gradient-to-b from-blue-100 to-pink-100 rounded-2xl border-3 border-[#4a3427] flex items-center justify-center overflow-hidden mb-3 relative p-2 shadow-inner">
-            <div class="flex items-center gap-2 text-5xl">
-              <span>🎯</span><span>🃏</span><span>🔗</span>
+          <!-- KARTU GAME 2: DUEL TARIK TAMBANG HOBBIES (TUG OF WAR) -->
+          <div class="game-card-box bg-white p-4 sm:p-5 flex flex-col justify-between items-center text-center">
+            <!-- Ilustrasi Kartu -->
+            <div class="w-full h-36 sm:h-40 bg-gradient-to-b from-amber-100 to-rose-100 rounded-2xl border-3 border-[#4a3427] flex items-center justify-center overflow-hidden mb-3 relative p-2 shadow-inner">
+              <div class="flex items-center gap-2 text-5xl">
+                <span>🧒</span><span>🪢</span><span>👧</span>
+              </div>
+              <span class="absolute top-2 left-2 px-2.5 py-0.5 rounded-full bg-emerald-600 text-white font-game font-bold text-[11px] shadow">
+                1v1 & 60 DETIK
+              </span>
             </div>
-            <span class="absolute top-2 left-2 px-2.5 py-0.5 rounded-full bg-indigo-600 text-white font-game font-bold text-[11px] shadow">
-              2 MODE MATCH
-            </span>
-          </div>
 
-          <h3 class="font-game font-bold text-xl sm:text-2xl text-[#3b281c] mb-1 leading-tight">
-            Hobby Match
-          </h3>
-          <p class="text-xs sm:text-sm font-bold text-slate-500 mb-3.5">
-            Sambungkan gambar dengan namanya lewat garis ceria, atau uji memori dengan buka kartu 1–10!
-          </p>
+            <h3 class="font-game font-bold text-xl sm:text-2xl text-[#3b281c] mb-1 leading-tight">
+              Duel Tarik Tambang
+            </h3>
+            <p class="text-xs sm:text-sm font-bold text-slate-500 mb-3.5">
+              Cepat tepat tebak gambar hobi! Tarik tali tambang ke arah timmu sampai garis menang!
+            </p>
 
-          <div class="w-full flex items-center gap-2">
-            <button type="button" data-game="match"
-              class="btn-play-game btn-chunky btn-play-orange flex-1 py-2.5 sm:py-3 rounded-2xl text-white font-game font-bold text-lg sm:text-xl tracking-wide flex items-center justify-center gap-1.5 shadow-md">
-              <span>▶</span> Play!
-            </button>
-            <button type="button" data-game="match" title="Kelola Soal Hobby Match"
-              class="btn-open-settings btn-chunky px-3 py-2.5 sm:py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 border-2 border-slate-300 font-game font-bold text-sm text-slate-700 flex items-center gap-1 shadow-sm">
-              <span>⚙️</span> Soal
-            </button>
-          </div>
-        </div>
-
-        <!-- KARTU GAME 4: WORD SEARCH: HOBBIES (CARI KATA) -->
-        <div class="game-card-box bg-white p-4 sm:p-5 flex flex-col justify-between items-center text-center">
-          <!-- Ilustrasi Kartu -->
-          <div class="w-full h-36 sm:h-40 bg-gradient-to-b from-yellow-100 to-purple-100 rounded-2xl border-3 border-[#4a3427] flex items-center justify-center overflow-hidden mb-3 relative p-2 shadow-inner">
-            <div class="flex items-center gap-2 text-5xl">
-              <span>🔎</span><span>🔤</span><span>⭐</span>
+            <div class="w-full flex items-center gap-2">
+              <button type="button" data-game="tugofwar"
+                class="btn-play-game btn-chunky btn-play-green flex-1 py-2.5 sm:py-3 rounded-2xl text-white font-game font-bold text-lg sm:text-xl tracking-wide flex items-center justify-center gap-1.5 shadow-md">
+                <span>▶</span> Play!
+              </button>
+              <button type="button" data-game="tugofwar" title="Kelola Soal Tarik Tambang"
+                class="btn-open-settings btn-chunky px-3 py-2.5 sm:py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 border-2 border-slate-300 font-game font-bold text-sm text-slate-700 flex items-center gap-1 shadow-sm">
+                <span>⚙️</span> Soal
+              </button>
             </div>
-            <span class="absolute top-2 left-2 px-2.5 py-0.5 rounded-full bg-pink-600 text-white font-game font-bold text-[11px] shadow">
-              GRID 9x9
-            </span>
           </div>
 
-          <h3 class="font-game font-bold text-xl sm:text-2xl text-[#3b281c] mb-1 leading-tight">
-            Word Search: Hobbies
-          </h3>
-          <p class="text-xs sm:text-sm font-bold text-slate-500 mb-3.5">
-            Cari kata hobi bahasa Inggris di kotak huruf dengan stabilo warna-warni! Geser atau ketuk!
-          </p>
+          <!-- KARTU GAME 3: HOBBY MATCH (SAMBUNG & BUKA KARTU) -->
+          <div class="game-card-box bg-white p-4 sm:p-5 flex flex-col justify-between items-center text-center">
+            <!-- Ilustrasi Kartu -->
+            <div class="w-full h-36 sm:h-40 bg-gradient-to-b from-blue-100 to-pink-100 rounded-2xl border-3 border-[#4a3427] flex items-center justify-center overflow-hidden mb-3 relative p-2 shadow-inner">
+              <div class="flex items-center gap-2 text-5xl">
+                <span>🎯</span><span>🃏</span><span>🔗</span>
+              </div>
+              <span class="absolute top-2 left-2 px-2.5 py-0.5 rounded-full bg-indigo-600 text-white font-game font-bold text-[11px] shadow">
+                2 MODE MATCH
+              </span>
+            </div>
 
-          <div class="w-full flex items-center gap-2">
-            <button type="button" data-game="wordsearch"
-              class="btn-play-game btn-chunky btn-play-pink flex-1 py-2.5 sm:py-3 rounded-2xl text-white font-game font-bold text-lg sm:text-xl tracking-wide flex items-center justify-center gap-1.5 shadow-md">
-              <span>▶</span> Play!
-            </button>
-            <button type="button" data-game="wordsearch" title="Kelola Soal Word Search"
-              class="btn-open-settings btn-chunky px-3 py-2.5 sm:py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 border-2 border-slate-300 font-game font-bold text-sm text-slate-700 flex items-center gap-1 shadow-sm">
-              <span>⚙️</span> Soal
-            </button>
+            <h3 class="font-game font-bold text-xl sm:text-2xl text-[#3b281c] mb-1 leading-tight">
+              Hobby Match
+            </h3>
+            <p class="text-xs sm:text-sm font-bold text-slate-500 mb-3.5">
+              Sambungkan gambar dengan namanya lewat garis ceria, atau uji memori dengan buka kartu 1–10!
+            </p>
+
+            <div class="w-full flex items-center gap-2">
+              <button type="button" data-game="match"
+                class="btn-play-game btn-chunky btn-play-orange flex-1 py-2.5 sm:py-3 rounded-2xl text-white font-game font-bold text-lg sm:text-xl tracking-wide flex items-center justify-center gap-1.5 shadow-md">
+                <span>▶</span> Play!
+              </button>
+              <button type="button" data-game="match" title="Kelola Soal Hobby Match"
+                class="btn-open-settings btn-chunky px-3 py-2.5 sm:py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 border-2 border-slate-300 font-game font-bold text-sm text-slate-700 flex items-center gap-1 shadow-sm">
+                <span>⚙️</span> Soal
+              </button>
+            </div>
           </div>
+
+          <!-- KARTU GAME 4: WORD SEARCH: HOBBIES (CARI KATA) -->
+          <div class="game-card-box bg-white p-4 sm:p-5 flex flex-col justify-between items-center text-center">
+            <!-- Ilustrasi Kartu -->
+            <div class="w-full h-36 sm:h-40 bg-gradient-to-b from-yellow-100 to-purple-100 rounded-2xl border-3 border-[#4a3427] flex items-center justify-center overflow-hidden mb-3 relative p-2 shadow-inner">
+              <div class="flex items-center gap-2 text-5xl">
+                <span>🔎</span><span>🔤</span><span>⭐</span>
+              </div>
+              <span class="absolute top-2 left-2 px-2.5 py-0.5 rounded-full bg-pink-600 text-white font-game font-bold text-[11px] shadow">
+                GRID 9x9
+              </span>
+            </div>
+
+            <h3 class="font-game font-bold text-xl sm:text-2xl text-[#3b281c] mb-1 leading-tight">
+              Word Search: Hobbies
+            </h3>
+            <p class="text-xs sm:text-sm font-bold text-slate-500 mb-3.5">
+              Cari kata hobi bahasa Inggris di kotak huruf dengan stabilo warna-warni! Geser atau ketuk!
+            </p>
+
+            <div class="w-full flex items-center gap-2">
+              <button type="button" data-game="wordsearch"
+                class="btn-play-game btn-chunky btn-play-pink flex-1 py-2.5 sm:py-3 rounded-2xl text-white font-game font-bold text-lg sm:text-xl tracking-wide flex items-center justify-center gap-1.5 shadow-md">
+                <span>▶</span> Play!
+              </button>
+              <button type="button" data-game="wordsearch" title="Kelola Soal Word Search"
+                class="btn-open-settings btn-chunky px-3 py-2.5 sm:py-3 rounded-2xl bg-slate-100 hover:bg-slate-200 border-2 border-slate-300 font-game font-bold text-sm text-slate-700 flex items-center gap-1 shadow-sm">
+                <span>⚙️</span> Soal
+              </button>
+            </div>
+          </div>
+
         </div>
+      </section>
 
-      </div>
+      <!-- VIEW 2: MODUL PEMBELAJARAN SLIDE CANVA -->
+      <section id="viewModul" class="hidden flex-col gap-4 anim-pop">
+        <div class="game-card-box bg-white p-4 sm:p-6 flex flex-col gap-4">
+          
+          <!-- Bar Judul Modul & Tombol Aksi -->
+          <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3 border-b-2 border-slate-200">
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-amber-400 shrink-0 shadow bg-amber-200">
+                <img src="bunda_shaumi.png" alt="Bunda Shaumi" class="w-full h-full object-cover" />
+              </div>
+              <div>
+                <h2 class="font-game text-xl sm:text-2xl font-bold text-[#3b281c] leading-tight flex items-center gap-2">
+                  <span>📖</span> Modul Pembelajaran: Hobbies
+                </h2>
+                <p class="text-xs sm:text-sm font-bold text-slate-500">
+                  Slide Show Presentasi Interaktif Canva untuk Kelas 3 SD
+                </p>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-2 w-full sm:w-auto justify-end flex-wrap">
+              <button id="btnFullscreenModul" type="button"
+                class="px-3.5 py-2 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-game font-bold text-xs sm:text-sm flex items-center gap-1.5 shadow-md transition-all cursor-pointer">
+                <span>⛶</span> <span>Layar Penuh (Fullscreen)</span>
+              </button>
+              <a href="https://www.canva.com/design/DAHbs976Q98/ne148Ysgbw8uzgQPPPRl6Q/view?utm_content=DAHbs976Q98&amp;utm_campaign=designshare&amp;utm_medium=embeds&amp;utm_source=link" target="_blank" rel="noopener"
+                class="px-3.5 py-2 rounded-2xl bg-sky-100 hover:bg-sky-200 text-sky-800 font-game font-bold text-xs sm:text-sm border border-sky-300 flex items-center gap-1.5 shadow-sm transition-all">
+                <span>🌐</span> <span>Buka di Canva</span>
+              </a>
+              <button id="btnBackToGamesFromModul" type="button"
+                class="px-3.5 py-2 rounded-2xl bg-slate-100 hover:bg-slate-200 text-slate-700 font-game font-bold text-xs sm:text-sm border border-slate-300 flex items-center gap-1.5 shadow-sm transition-all cursor-pointer">
+                <span>🎮</span> <span>Kembali ke Games</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Container Canva Embed 16:9 Responsive (Bisa Fullscreen) -->
+          <div id="canvaEmbedWrapper" class="relative w-full rounded-2xl overflow-hidden border-4 border-[#4a3427] shadow-xl bg-slate-900" style="padding-top: 56.25%;">
+            <!-- Tombol Floating Exit Fullscreen (Khusus saat Layar Penuh di Smart TV / Proyektor Tanpa Keyboard) -->
+            <button id="btnFloatingExitFullscreen" type="button"
+              class="hidden absolute top-4 right-4 z-50 px-4 py-2.5 rounded-2xl bg-rose-600 hover:bg-rose-700 active:scale-95 text-white font-game font-bold text-sm sm:text-base shadow-2xl border-2 border-white flex items-center gap-2 cursor-pointer transition-all">
+              <span class="text-lg leading-none">✕</span> <span>Keluar Layar Penuh</span>
+            </button>
+            <iframe id="canvaIframe" loading="lazy" class="absolute inset-0 w-full h-full border-0"
+              src="https://www.canva.com/design/DAHbs976Q98/ne148Ysgbw8uzgQPPPRl6Q/view?embed"
+              allowfullscreen="allowfullscreen" allow="fullscreen">
+            </iframe>
+          </div>
+
+          <!-- Atribusi & Petunjuk Belajar -->
+          <div class="flex flex-col sm:flex-row items-center justify-between gap-2 pt-1 text-xs font-bold text-slate-500">
+            <p>
+              🎨 Desain slide presentasi oleh <span class="text-indigo-600 font-bold">YANI INDRIANI</span>
+            </p>
+            <p class="text-amber-700 bg-amber-50 px-3 py-1 rounded-full border border-amber-200">
+              💡 Klik tombol <strong>Layar Penuh</strong> untuk presentasi di Smart TV atau Proyektor Kelas!
+            </p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- VIEW 3: UMPAN BALIK (FEEDBACK INTERAKTIF SISWA) -->
+      <section id="viewFeedback" class="hidden flex-col gap-5 anim-pop">
+        <div class="game-card-box bg-white p-4 sm:p-6 flex flex-col gap-5">
+          
+          <!-- Header Refleksi & Balon Dialog Bunda Shaumi -->
+          <div class="flex flex-col sm:flex-row items-center sm:items-start gap-4 p-4 rounded-2xl bg-gradient-to-r from-purple-100 to-pink-100 border-2 border-purple-200 shadow-inner">
+            <div class="w-16 h-16 sm:w-20 sm:h-20 rounded-full border-4 border-purple-600 overflow-hidden shrink-0 shadow-md bg-amber-300">
+              <img src="bunda_shaumi.png" alt="Bunda Shaumi" class="w-full h-full object-cover" />
+            </div>
+            <div class="flex-1 text-center sm:text-left">
+              <span class="inline-block px-3 py-0.5 rounded-full bg-purple-600 text-white font-game font-bold text-xs uppercase tracking-wider mb-1">
+                Refleksi Belajar Hari Ini
+              </span>
+              <h2 class="font-game text-2xl sm:text-3xl font-bold text-purple-950 leading-tight">
+                How do you feel about today's lesson?
+              </h2>
+              <p id="feedbackMentorSpeech" class="text-xs sm:text-sm font-bold text-purple-800 mt-1">
+                "Anak-anak hebat, bagaimana perasaanmu belajar Bahasa Inggris hari ini? Maju bergantian ya! Tarik atau sentuh emotikon 3D di bawah untuk berbaris di papan ini! ✨"
+              </p>
+            </div>
+            <button id="btnBackToGamesFromFeedback" type="button"
+              class="shrink-0 px-3.5 py-2 rounded-2xl bg-white hover:bg-slate-100 text-slate-700 font-game font-bold text-xs sm:text-sm border-2 border-purple-300 flex items-center gap-1.5 shadow-sm cursor-pointer">
+              <span>🎮</span> <span>Kembali ke Games</span>
+            </button>
+          </div>
+
+          <!-- PAPAN KOLEKSI: SAMPAIKAN PERASAANMU DI SINI -->
+          <div id="feedbackDropZone" class="relative w-full min-h-[300px] sm:min-h-[340px] rounded-3xl border-4 border-dashed border-purple-400 bg-purple-50/80 p-4 sm:p-6 flex flex-col transition-all duration-300 shadow-inner overflow-hidden">
+            
+            <!-- Canvas Konfeti Mini -->
+            <canvas id="feedbackConfettiCanvas" class="pointer-events-none absolute inset-0 w-full h-full z-10"></canvas>
+
+            <!-- Bar Judul Kotak & Kontrol Sesi Kelas -->
+            <div class="w-full flex flex-col sm:flex-row items-center justify-between gap-2 pb-3 mb-3 border-b-2 border-purple-200/80 z-20">
+              <div class="flex items-center gap-2">
+                <span class="text-2xl animate-bounce">💖</span>
+                <div>
+                  <h3 class="font-game text-lg sm:text-2xl font-bold text-purple-950 leading-tight">
+                    Sampaikan Perasaanmu di Sini
+                  </h3>
+                  <p class="text-xs font-bold text-purple-700">
+                    Siswa maju satu per satu & pilih emotikon 3D untuk berbaris rapi di papan!
+                  </p>
+                </div>
+              </div>
+
+              <!-- Live Counter & Tombol Bersihkan Sesi -->
+              <div class="flex items-center gap-2">
+                <span id="badgeLiveCount" class="px-3.5 py-1.5 rounded-full bg-purple-600 text-white font-game font-bold text-xs sm:text-sm shadow-sm">
+                  0 Siswa Sudah Memilih
+                </span>
+                <button id="btnResetBoard" type="button" title="Mulai sesi baru untuk kelas atau jam pelajaran berikutnya"
+                  class="px-3 py-1.5 rounded-full bg-white hover:bg-rose-50 text-rose-700 font-game font-bold text-xs border border-rose-300 shadow-sm flex items-center gap-1 cursor-pointer transition-colors">
+                  <span>🔄</span> <span>Sesi Baru</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Tally Bar Ringkasan Cepat Emosi Kelas -->
+            <div id="boardTallyBar" class="hidden flex-wrap items-center gap-1.5 sm:gap-2 mb-3 pb-2 border-b border-purple-200/60 z-20 text-xs font-bold text-purple-900">
+              <!-- Diisi dinamis via JS -->
+            </div>
+
+            <!-- Wadah Placeholder Saat Papan Masih Kosong -->
+            <div id="dropZonePlaceholder" class="flex-1 flex flex-col items-center justify-center gap-2 py-8 select-none pointer-events-none z-20">
+              <div class="w-20 h-20 rounded-full border-3 border-dashed border-purple-300 flex items-center justify-center text-4xl text-purple-400 animate-pulse bg-white/80 shadow-sm">
+                📥
+              </div>
+              <div class="font-game font-bold text-lg sm:text-xl text-purple-900">
+                Papan Masih Kosong
+              </div>
+              <p class="text-xs sm:text-sm font-bold text-purple-600 max-w-md text-center">
+                Ayo maju satu per satu! Tarik (drag) atau sentuh emotikon 3D di bawah untuk berbaris di papan ini!
+              </p>
+            </div>
+
+            <!-- Galeri Koleksi Emotikon Berbaris (Papan Emosi Siswa Kelas) -->
+            <div id="studentEmoteBoard" class="hidden flex-1 grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-3 z-20 overflow-y-auto max-h-[360px] p-1">
+              <!-- Diisi berbaris saat siswa men-drag atau menyentuh emotikon 3D -->
+            </div>
+
+          </div>
+
+          <!-- BAKI EMOTIKON PILIHAN (3D ANIMATED EMOTE TRAY) -->
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="font-game font-bold text-base sm:text-lg text-[#3b281c] flex items-center gap-2">
+                <span>✨</span> <span>Pilih Emotikon 3D Perasaanmu:</span>
+              </h3>
+              <span class="text-xs font-bold text-purple-600 bg-purple-100 px-3 py-1 rounded-full">
+                Tarik (Drag) atau Sentuh (Tap)
+              </span>
+            </div>
+
+            <div id="emoteTray" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-3 select-none">
+              <!-- Diisi 7 Emotikon 3D Animated via JavaScript -->
+            </div>
+          </div>
+
+          <!-- REKAPITULASI RESPONS KELAS (UNTUK GURU & REFLEKSI) -->
+          <div class="pt-4 border-t-2 border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs sm:text-sm font-bold text-slate-500">
+            <div class="flex items-center gap-2" id="feedbackStatsSummary">
+              <span>📊</span>
+              <span>Total Respon Terkumpul: <strong id="feedbackCountTotal" class="text-purple-700 font-bold">0</strong> siswa</span>
+            </div>
+            <button id="btnClearFeedbackStats" type="button" class="text-rose-600 hover:text-rose-700 underline cursor-pointer text-xs">
+              Hapus Data Riwayat
+            </button>
+          </div>
+
+        </div>
+      </section>
+
     </main>
   </div>
 
